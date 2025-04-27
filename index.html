@@ -221,6 +221,42 @@
       font-size: 0.9rem;
       color: var(--cor-footer-texto);
     }
+
+    #galeria-videos {
+      text-align: center;
+    }
+    
+    .grid-videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+    
+    .video-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+    
+    .video-item video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 15px;
+    }
+    
+    .legenda {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      margin: 0;
+      padding: 5px 10px;
+      background: var(--cor-destaque);
+      color: #000000;
+      font-size: 1rem;
+      border-radius: 10px;
+    }
     </style>
   </head>
   <body>
@@ -241,7 +277,7 @@
       <h2>🔈 Sobre</h2>
       <p class="quote">“Meu compromisso vai além da música: é criar atmosferas, criar memorias e transformar seu evento em algo inesquecível.”</p>
       <h4>Por isso, sou a escolha de quem não abre mão da qualidade.</h4>
-      <a href="https://wa.me/5599991970062" class="btn">Solicitar Orçamento</a>
+      <a href="https://wa.me/5599991970062" class="btn">Saiba Mais</a>
     </section>
   
     <section id="estilos">
@@ -249,20 +285,42 @@
       <ul>
         <li>Música eletrônica (House, Techno, Deep)</li>
         <li>Funk light / Pop / Rock / Nacionalidades</li>
-        <li>Flashback / mid back</li>
+        <li>Flashback / Mid back</li>
         <li>Set temático e personalizado</li>
       </ul>
     </section>
   
-    <section id="diferenciais">
+    <!-- <section id="diferenciais">
       <h2>✨ Diferenciais</h2>
-      <ul>
+      <ul style="list-style: none; padding: 0; margin-top: 1rem;">
         <li>Repertório adaptável ao público</li>
         <li>Mixagens criativas e mashups ao vivo</li>
         <li>Remixes exclusivos</li>
         <li>Equipamento próprio</li>
       </ul>
+    </section> -->
+    <section id="galeria-videos" style="padding: 2rem 0;">
+      <h2>✨ Diferenciais</h2>
+    
+      <div class="grid-videos">
+    
+        <div class="video-item" data-aos="fade-up">
+          <p class="diferencial-titulo">🚀 Mixagens criativas e mashups ao vivo</p>
+          <video src="assets/videos/dj-tocando.mp4" autoplay muted loop playsinline></video>
+          <p class="legenda">Show ao vivo 🔥</p>
+        </div>
+    
+        <div class="video-item" data-aos="fade-up" data-aos-delay="100">
+          <p class="diferencial-titulo">🔊 Repertório adaptável ao público</p>
+          <video src="assets/videos/video-galera.mp4" autoplay muted loop playsinline></video>
+          <p class="legenda">Performances incriveis 🔥</p>
+        </div>
+    
+        <!-- Você pode adicionar mais videos seguindo essa estrutura -->
+        
+      </div>
     </section>
+    
   
     <section id="experiencias">
       <h2>📅 Experiências recentes</h2>
