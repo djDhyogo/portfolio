@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Dhyogo Dj - Energia que a sua festa merece 🔥" />
 <meta name="twitter:description" content="Conheça o trabalho do DJ Dhyogo, especialista em animar festas inesquecíveis!" />
 <meta name="twitter:image" content="https://djdhyogo.github.io/portfolio/assets/images/capa.jpeg" />
-
+<!-- favicon -->
   <link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
   <link rel="shortcut icon" href="favicon/favicon.ico" />
@@ -157,6 +157,52 @@
       transition: background-color 0.3s ease;
     }
 
+    .reels-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    /* Imagem da logo */
+    .logo-instagram {
+      width: 165px;
+      height: auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    /* Animação ao passar o mouse na logo */
+    .logo-link:hover .logo-instagram {
+      transform: scale(1.2);
+      
+    }
+    
+    /* Área dos botões */
+    .reels-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    /* Responsividade para telas menores */
+    @media (max-width: 768px) {
+      .reels-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .reels-buttons {
+        grid-template-columns: 1fr; /* Em mobile, 1 botão por linha */
+        width: 100%;
+        max-width: 300px;
+      }
+    
+      .logo-instagram {
+        width: 150px; /* Diminui a logo no mobile */
+      }
+    }
+    
     .btn:hover {
       background-color: var(--cor-btn-hover);
       color: var(--cor-texto);
@@ -257,6 +303,28 @@
       font-size: 1rem;
       border-radius: 10px;
     }
+    .video-wrapper {
+      position: relative;
+    }
+    
+    .ativar-som-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    
+    .ativar-som-btn:hover {
+      background: rgba(0, 0, 0
+      , 0.9);
+    }
     </style>
   </head>
   <body>
@@ -306,18 +374,26 @@
     
         <div class="video-item" data-aos="fade-up">
           <p class="diferencial-titulo">🚀 Mixagens criativas e mashups ao vivo</p>
-          <video src="assets/videos/dj-tocando.mp4" autoplay muted loop playsinline></video>
+    
+          <div class="video-wrapper">
+            <video id="video1" src="assets/videos/dj-tocando.mp4" autoplay muted loop playsinline></video>
+            <button class="ativar-som-btn" onclick="alternarSom('video1', this)">🔇 Ativar som</button>
+          </div>
+    
           <p class="legenda">Show ao vivo 🔥</p>
         </div>
     
         <div class="video-item" data-aos="fade-up" data-aos-delay="100">
           <p class="diferencial-titulo">🔊 Repertório adaptável ao público</p>
-          <video src="assets/videos/video-galera.mp4" autoplay muted loop playsinline></video>
-          <p class="legenda">Performances incriveis 🔥</p>
+    
+          <div class="video-wrapper">
+            <video id="video2" src="assets/videos/video-galera.mp4" autoplay muted loop playsinline></video>
+            <button class="ativar-som-btn" onclick="alternarSom('video2', this)">🔇 Ativar som</button>
+          </div>
+    
+          <p class="legenda">Performances incríveis 🔥</p>
         </div>
     
-        <!-- Você pode adicionar mais videos seguindo essa estrutura -->
-        
       </div>
     </section>
     
@@ -345,15 +421,22 @@
         Seu navegador não suporta a exibição de vídeos.
         <img src="assets/images/preview-drone.png" alt="Prévia do vídeo" />
       </video>
-    </section>  
+    </section> 
     <section class="reels">
       <h2>🎬 Reels no Instagram</h2>
-      <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NzI0NzQ4MDg4MjM1?story_media_id=3589333953498239401&igsh=MWV0cGxuaGVtdHRyeQ==" target="_blank">1.Reels 🎬</a>
-      <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDU4MDQwNjMzMDkwODY2?story_media_id=3580493932584642017&igsh=MTN2emQzNW5mOWN6MA==" target="_blank">2.Reels 🎬</a>
-      <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MjE0MDcxNjcwMjUwMDg3?story_media_id=3234042652072225419&igsh=YnpvNWRxdzJvZ2tr" target="_blank">3.Reels 🎬</a>
-      <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDU4MDQwNjMzMDkwODY2?story_media_id=3579783231553638853_404604810&igsh=MXdidWthZnQ1dXl3Mw==" target="_blank">4.Reels 🎬</a>
+      <div class="reels-container">
+        <a href="https://www.instagram.com/dhyogodj" target="_blank" class="logo-link">
+          <img src="assets/images/icons8-instagram-250-amarela.png" alt="Instagram Logo" class="logo-instagram">
+        </a>
+        <div class="reels-buttons">
+          <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE3OTE0NzI0NzQ4MDg4MjM1?story_media_id=3589333953498239401&igsh=MWV0cGxuaGVtdHRyeQ==" target="_blank">1. Reels 🎬</a>
+          <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDU4MDQwNjMzMDkwODY2?story_media_id=3580493932584642017&igsh=MTN2emQzNW5mOWN6MA==" target="_blank">2. Reels 🎬</a>
+          <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MjE0MDcxNjcwMjUwMDg3?story_media_id=3234042652072225419&igsh=YnpvNWRxdzJvZ2tr" target="_blank">3. Reels 🎬</a>
+          <a class="btn" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDU4MDQwNjMzMDkwODY2?story_media_id=3579783231553638853_404604810&igsh=MXdidWthZnQ1dXl3Mw==" target="_blank">4. Reels 🎬</a>
+        </div>
+      </div>
     </section>
-
+    
     <section id="parcerias" class="parcerias">
       <h2>🤝 Parcerias e Indicações</h2>
       <p>
@@ -393,6 +476,17 @@
     elementos.forEach(el => {
       observer.observe(el);
     });
+    function alternarSom(videoId, botao) {
+      const video = document.getElementById(videoId);
+      if (video.muted) {
+        video.muted = false;
+        botao.textContent = "🔈 Mutar";
+      } else {
+        video.muted = true;
+        botao.textContent = "🔇 Ativar som";
+      }
+    }
+    
   </script>
   </html>
 
