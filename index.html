@@ -24,308 +24,7 @@
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <title>DJ Dhyogo</title>
-    <style>
-    :root {
-      --cor-fundo: #211e1e;
-      --cor-texto: #F5F5F5;
-      --cor-destaque: #D4AF37;
-      --cor-destaque-escuro: #B28F2C;
-      --cor-header: #000000;
-      --cor-link: #2f4f4f;
-      --cor-link-hover: #e0e0e0;
-      --cor-titulo-secao: #ff0044;
-      --cor-btn-hover: #ff0044;
-      --cor-parcerias: #e0e0e0;
-      --cor-parcerias-texto: #555555;
-      --cor-footer: #2e2e2e;
-      --cor-footer-texto: #B0B0B0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--cor-fundo);
-      color: var(--cor-texto);
-    }
-
-    header {
-      background-color: var(--cor-header);
-      color: var(--cor-texto);
-      padding: 2.5rem 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 3rem;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      margin-top: 0.5rem;
-    }
-
-    nav {
-      background-color: var(--cor-destaque);
-      text-align: center;
-      padding: 1% 0;
-    }
-
-    nav a {
-      color: var(--cor-link);
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: var(--cor-link-hover);
-    }
-
-    section {
-      padding: 1rem 1.5rem;
-      max-width: 960px;
-      margin: auto;
-    }
-
-    .quote {
-      font-style: italic;
-      font-size: 1.2rem;
-      color: #B0B0B0;
-      margin-top: 1rem;
-      padding-left: 1rem;
-      border-left: 4px solid var(--cor-titulo-secao);
-    }
-
-    h2 {
-      color: var(--cor-titulo-secao);
-      margin-bottom: 0.5rem;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li::before {
-      content: '🎵 ';
-    }
-
-    @keyframes zoomIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .galeria img,
-    .btn {
-      opacity: 0;
-      transform: scale(0.9);
-      transition: all 0.6s ease-out;
-    }
-
-    .galeria img.animate,
-    .btn.animate {
-      animation: zoomIn 0.8s ease-out forwards;
-    }
-
-    .galeria img {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      display: block;
-    }
-
-    .btn {
-      display: inline-block;
-      background-color: var(--cor-destaque);
-      color: var(--cor-header);
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-    }
-
-    .reels-container {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    
-    /* Imagem da logo */
-    .logo-instagram {
-      width: 165px;
-      height: auto;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    /* Animação ao passar o mouse na logo */
-    .logo-link:hover .logo-instagram {
-      transform: scale(1.2);
-      
-    }
-    
-    /* Área dos botões */
-    .reels-buttons {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-    
-    /* Responsividade para telas menores */
-    @media (max-width: 768px) {
-      .reels-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-    
-      .reels-buttons {
-        grid-template-columns: 1fr; /* Em mobile, 1 botão por linha */
-        width: 100%;
-        max-width: 300px;
-      }
-    
-      .logo-instagram {
-        width: 150px; /* Diminui a logo no mobile */
-      }
-    }
-    
-    .btn:hover {
-      background-color: var(--cor-btn-hover);
-      color: var(--cor-texto);
-    }
-
-    .contato a {
-      color: var(--cor-destaque);
-      text-decoration: none;
-    }
-
-    .contato a:hover {
-      color: var(--cor-btn-hover);
-    }
-
-    .parcerias {
-      background-color: var(--cor-parcerias);
-      padding: 1% 1.5rem;
-      margin-top: 2rem;
-      border-top: 10px solid var(--cor-destaque);
-      color: var(--cor-parcerias-texto);
-    }
-
-    .whatsapp-button {
-      position: fixed;
-      bottom: 50px;
-      right: 20px;
-      background-color: var(--cor-destaque);
-      color: var(--cor-texto);
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-      z-index: 1000;
-      animation: bounce 2s infinite ease-in-out;
-    }
-
-    .whatsapp-button i {
-      font-size: 45px;
-      animation: bounce 2.5s infinite ease-in-out;
-    }
-
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-      }
-      40% {
-        transform: translateY(-30px);
-      }
-      60% {
-        transform: translateY(-4px);
-      }
-    }
-
-    footer {
-      background-color: var(--cor-footer);
-      text-align: center;
-      padding: 8px;
-      font-size: 0.8rem;
-      color: var(--cor-footer-texto);
-    }
-
-    #galeria-videos {
-      text-align: center;
-    }
-    
-    .grid-videos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      padding: 1rem;
-    }
-    
-    .video-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 15px;
-    }
-    
-    .video-item video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 15px;
-    }
-    
-    .legenda {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      margin: 0;
-      padding: 5px 10px;
-      background: var(--cor-destaque);
-      color: #000000;
-      font-size: 1rem;
-      border-radius: 10px;
-    }
-    .video-wrapper {
-      position: relative;
-    }
-    
-    .ativar-som-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      font-size: 13px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s ease;
-    }
-    
-    .ativar-som-btn:hover {
-      background: rgba(0, 0, 0
-      , 0.9);
-    }
-    </style>
+  <link rel="stylesheet" href="styles.css">
   </head>
   <body>
   
@@ -335,11 +34,12 @@
     </header>
   
     <nav>
-      <a href="#estilos">Estilos</a>
+      <a href="index.html">Home</a>
       <a href="#galeria">Galeria</a>
-      <a href="#parcerias">Parcerias</a>
+      <a href="orcamento.html">Orçamento</a>
       <a href="#contato">Contato</a>
-    </nav>
+  </nav>
+
   
     <section id="sobre">
       <h2>🔈 Sobre</h2>
@@ -443,20 +143,22 @@
         Trago comigo uma rede de profissionais que fazem eventos acontecerem com perfeição. Som de qualidade, timing e alinhamento garantem minha presença em produções de excelência.
       </p>
     </section>
-  
-    <section id="contato" class="contato">
-      <h2>📲 Contato</h2>
-      <p>Email: <a href="mailto:djdhyogo@icloud.com">djdhyogo@icloud.com</a></p>
-      <p>Instagram: <a href="https://instagram.com/dhyogodj" target="_blank">@dhyogodj</a></p>
-      <p>WhatsApp: <a href="https://wa.me/5599991970062" target="_blank">(99) 99197-0062</a></p>
-    </section>
+  <section id="contato" class="contato">
+    <h3>📲 Contato</h3>
+    <p>
+        <a href="tel:+5599991970062"><i class="fas fa-phone"></i> (99) 99197-0062</a>
+        <a href="mailto:djdhyogo@icloud.com"><i class="fas fa-envelope"></i> djdhyogo@icloud.com</a>
+        <a href="https://instagram.com/dhyogodj" target="_blank"><i class="fab fa-instagram"></i> @dhyogodj</a>
+    </p>
+    <button class="btn animate" onclick="window.location.href='https://wa.me/5599991970062'">Reserve Agora</button>
+</section>
   
     <a href="https://wa.me/5599991970062" target="_blank" class="whatsapp-button">
       <i class="fab fa-whatsapp"></i>
     </a>
 
     <footer>
-      © 2025 DJ Dhyogo Todos os direitos reservados | CNPJ 55996625000147 
+      © 2025 Todos os direitos reservados | CNPJ 55996625000147 
       | Razão Social 55.996.625 DYOGO SANTOS LEAL
     </footer>
   
