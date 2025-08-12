@@ -16,6 +16,13 @@
 }
 
 /* Layout Geral */
+
+
+.mylogo  {
+    width: 450px;
+    height: 85px;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -29,6 +36,9 @@ header {
     color: var(--cor-texto);
     padding: 2rem 1rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 header h1 {
@@ -230,6 +240,7 @@ footer {
     padding: 8px;
     font-size: 0.8rem;
     color: var(--cor-footer-texto);
+    position: fixed;
 }
 
 #galeria-videos {
@@ -315,6 +326,15 @@ footer {
         padding: 8px;
         font-size: 0.8rem;
         color: var(--cor-footer-texto);
+    }
+    button,
+    .btn,
+    .btn-danger {
+        display: none !important;
+    }
+    #tabela-eventos th:nth-child(5),
+    #tabela-eventos td:nth-child(5) {
+    display: none;
     }
 }
 

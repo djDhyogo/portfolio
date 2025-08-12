@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- Meta para quando compartilhar no WhatsApp, Instagram, etc -->
+<meta property="og:title" content="Dhyogo Dj - Energia que a sua festa merece 🔥" />
+<meta property="og:description" content="Especialista em festas inesquecíveis!" />
+<meta property="og:image" content="https://djdhyogo.github.io/portfolio/assets/images/capa.jpeg" />
+<meta property="og:url" content="https://djdhyogo.github.io/portfolio/" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter Card (opcional, mas ajuda também) -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Dhyogo Dj - Energia que a sua festa merece 🔥" />
+<meta name="twitter:description" content="Conheça o trabalho do DJ Dhyogo, especialista em animar festas inesquecíveis!" />
+<meta name="twitter:image" content="https://djdhyogo.github.io/portfolio/assets/images/capa.jpeg" />
+<!-- favicon -->
+<link rel="icon" type="image/png" href="favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+<link rel="shortcut icon" href="favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
+<link rel="manifest" href="favicon/site.webmanifest" />
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <title>DJ Dhyogo</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<header>
-    <h1>🎧 Dhyogo Dj </h1>
-    <p>🔥 Energia que a sua festa merece 🔊</p>
-</header>
-
-<nav>
-
-</nav>
-
+    <header>
+        <img class="mylogo" src="/assets/images/Minhalogo.png" alt="Logo do DJ Dhyogo" />
+    </header>
+    <nav></nav>
 <style>
 
 
@@ -25,13 +39,6 @@
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
     background: #fff;
-    }
-
-    header,
-    footer {
-    color: #fff;
-    padding: 20px;
-    text-align: center;
     }
 
     .container {
@@ -49,11 +56,11 @@
     border-collapse: collapse;
     margin: 30px 0;
     font-size: 16px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(44, 32, 32, 0.135);
     }
 
-    th,
-    td 
-    {
+    th,td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
@@ -93,54 +100,14 @@
     font-size: 14px;
     }
 
-    .btn-whatsapp {
-    display: inline-block;
-    background: #3C91E6;
-    color: #fff;
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    text-align: center;
-    }
-
-    header {
-        background-color: var(--cor-header);
-        color: var(--cor-texto);
-        padding: 2rem 1rem;
-        text-align: center;
-    }
-    
-    header h1 {
-        margin: 0;
-        font-size: 3rem;
-    }
-    
-    header p {
-        font-size: 1.2rem;
-        margin-top: 0.5rem;
-    }
-    
-    @media print {
-        button,
-        .btn,
-        .btn-danger {
-            display: none !important;
-        }
-        #tabela-eventos th:nth-child(5),
-        #tabela-eventos td:nth-child(5) {
-        display: none;
-        }
-    }
-
-
 </style>
 </head>
 <body>
 <div class="container">
     <h2>Eventos Realizados</h2>
 
-    <button class="btn" onclick="adicionarLinha()">+ Adicionar Evento</button>
+    <!-- botão com classe no-print para não aparecer na impressão -->
+    <button class="btn no-print" onclick="adicionarLinha()">+ Adicionar Evento</button>
 
     <table id="tabela-eventos">
         <thead>
@@ -149,7 +116,8 @@
                 <th>Data</th>
                 <th>Quantidade</th>
                 <th>Subtotal</th>
-                <th>Ação</th>
+                <!-- th com classe no-print: não será impresso -->
+                <th class="no-print">Ação</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -157,17 +125,18 @@
             <tr>
                 <td colspan="3" class="total_serviços" id="total-apresentacoes">Total de Apresentações: 0</td>
                 <td class="total_serviços" id="total-geral">R$ 0,00</td>
-                <td></td>
+                <td class="no-print"></td>
             </tr>
         </tfoot>
     </table>
 </div>
-
+</body>
 <script>
 function salvarTabela() {
     const linhas = [];
     document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
-        const cols = Array.from(linha.querySelectorAll("td")).map(td => td.innerText);
+        const tds = Array.from(linha.querySelectorAll("td")).slice(0, 4);
+        const cols = tds.map(td => td.innerText);
         linhas.push(cols);
     });
     localStorage.setItem("eventosTabela", JSON.stringify(linhas));
@@ -179,37 +148,50 @@ function carregarTabela() {
         adicionarLinha("Carnaval 2025 – 1º dia", "01/03/2025", 500);
     } else {
         dados.forEach(c => {
-            adicionarLinha(c[0], c[1], parseFloat(c[3].replace(",", ".")));
+            // c[0]=evento, c[1]=data, c[2]=quantidade (será recalculada), c[3]=subtotal
+            const subtotal = parseFloat(String(c[3]).replace(",", ".")) || 0;
+            adicionarLinha(c[0], c[1], subtotal);
         });
     }
 }
 
 function atualizarTotais() {
-    let totalApresentacoes = document.querySelectorAll("#tabela-eventos tbody tr").length;
+    const linhas = document.querySelectorAll("#tabela-eventos tbody tr");
+    let totalApresentacoes = linhas.length;
     let soma = 0;
-    document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
-        let subtotal = parseFloat(linha.cells[3].innerText.replace(",", ".")) || 0;
+    linhas.forEach(linha => {
+        const subtotalText = linha.cells[3].innerText || "0";
+        const subtotal = parseFloat(String(subtotalText).replace(",", ".")) || 0;
         soma += subtotal;
     });
+
     document.getElementById("total-apresentacoes").innerText = `Total de Apresentações: ${totalApresentacoes}`;
     document.getElementById("total-geral").innerText = "R$ " + soma.toFixed(2).replace(".", ",");
     salvarTabela();
 }
 
+/**
+ * adiciona uma linha. quantidade é sequencial e gerada automaticamente.
+ * subtotal é editável (string com vírgula é aceita).
+ */
 function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 500) {
-    let tabela = document.querySelector("#tabela-eventos tbody");
-    let novaLinha = tabela.insertRow();
+    const tabela = document.querySelector("#tabela-eventos tbody");
+    const novaLinha = tabela.insertRow();
 
-    let numeroSequencial = tabela.rows.length + 1;
+    const numeroSequencial = tabela.rows.length; // já é a sequência correta (1..n)
+
+    // Certifica formato do subtotal
+    const s = (typeof subtotal === "number") ? subtotal.toFixed(2).replace(".", ",") : String(subtotal);
 
     novaLinha.innerHTML = `
         <td contenteditable="true">${evento}</td>
         <td contenteditable="true">${data}</td>
         <td>${numeroSequencial}</td>
-        <td contenteditable="true">${subtotal.toFixed(2).replace(".", ",")}</td>
-        <td><button class="btn-danger" onclick="removerLinha(this)">Excluir</button></td>
+        <td contenteditable="true">${s}</td>
+        <td class="no-print"><button class="btn-danger" onclick="removerLinha(this)">Excluir</button></td>
     `;
 
+    // eventos para atualizar totais quando o usuário editar
     novaLinha.cells[0].addEventListener("input", atualizarTotais);
     novaLinha.cells[1].addEventListener("input", atualizarTotais);
     novaLinha.cells[3].addEventListener("input", atualizarTotais);
@@ -229,7 +211,7 @@ function atualizarNumeracao() {
     });
 }
 
-// Inicialização
+// inicializa a tabela
 carregarTabela();
 </script>
 
@@ -240,6 +222,7 @@ carregarTabela();
 </div>
 
 <footer>
-    © 2025 Todos os direitos reservados | CNPJ 55996625000147 
-    | Razão Social 55.996.625 Dyogo Santos Leal
+    © 2025 Todos os direitos reservados | CNPJ 55996625000147 | Razão Social 55.996.625 Dyogo Santos Leal
 </footer>
+
+</html>
