@@ -52,10 +52,29 @@
     }
 
     th,
-    td {
+    td 
+    {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
+    }
+
+
+    .btn-danger {
+        display: inline-block;
+        background-color: #dc3545;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
     }
 
     th {
@@ -102,37 +121,117 @@
         margin-top: 0.5rem;
     }
     
+    @media print {
+        button,
+        .btn,
+        .btn-danger {
+            display: none !important;
+        }
+        #tabela-eventos th:nth-child(5),
+        #tabela-eventos td:nth-child(5) {
+        display: none;
+        }
+    }
+
+
 </style>
+</head>
 <body>
 <div class="container">
-<h2>Eventos Realizados</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Evento</th>
-        <th>Data</th>
-        <th>Quantidade</th>
-        <th>Valor Unitário</th>
-        <th>Subtotal</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr><td>Carnaval 2025 – 1º dia</td><td>01/03/2025</td><td>1</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Carnaval 2025 – 2º dia</td><td>02/03/2025</td><td>2</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Carnaval 2025 – 3º dia</td><td>03/03/2025</td><td>3</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Lava Prato Imperatriz – 1º dia</td><td>15/03/2025</td><td>4</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Lava Prato Imperatriz – 2º dia</td><td>16/03/2025</td><td>5</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Aniversário Junior</td><td>12/04/2025</td><td>6</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Abertura de Praia 2025</td><td>20/07/2025</td><td>7</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    <tr><td>Apresentação Praia 26/07/2025</td><td>20/07/2025</td><td>7</td><td>R$ 500,00</td><td>R$ 500,00</td></tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="4" class="total_serviços">Total de Apresentações (7)</td>
-        <td class="total_serviços">R$ 4.000,00</td>
-    </tr>
-    </tfoot>
-</table>
+    <h2>Eventos Realizados</h2>
+
+    <button class="btn" onclick="adicionarLinha()">+ Adicionar Evento</button>
+
+    <table id="tabela-eventos">
+        <thead>
+            <tr>
+                <th>Evento</th>
+                <th>Data</th>
+                <th>Quantidade</th>
+                <th>Subtotal</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="total_serviços" id="total-apresentacoes">Total de Apresentações: 0</td>
+                <td class="total_serviços" id="total-geral">R$ 0,00</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+function salvarTabela() {
+    const linhas = [];
+    document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
+        const cols = Array.from(linha.querySelectorAll("td")).map(td => td.innerText);
+        linhas.push(cols);
+    });
+    localStorage.setItem("eventosTabela", JSON.stringify(linhas));
+}
+
+function carregarTabela() {
+    const dados = JSON.parse(localStorage.getItem("eventosTabela") || "[]");
+    if (dados.length === 0) {
+        adicionarLinha("Carnaval 2025 – 1º dia", "01/03/2025", 500);
+    } else {
+        dados.forEach(c => {
+            adicionarLinha(c[0], c[1], parseFloat(c[3].replace(",", ".")));
+        });
+    }
+}
+
+function atualizarTotais() {
+    let totalApresentacoes = document.querySelectorAll("#tabela-eventos tbody tr").length;
+    let soma = 0;
+    document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
+        let subtotal = parseFloat(linha.cells[3].innerText.replace(",", ".")) || 0;
+        soma += subtotal;
+    });
+    document.getElementById("total-apresentacoes").innerText = `Total de Apresentações: ${totalApresentacoes}`;
+    document.getElementById("total-geral").innerText = "R$ " + soma.toFixed(2).replace(".", ",");
+    salvarTabela();
+}
+
+function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 500) {
+    let tabela = document.querySelector("#tabela-eventos tbody");
+    let novaLinha = tabela.insertRow();
+
+    let numeroSequencial = tabela.rows.length + 1;
+
+    novaLinha.innerHTML = `
+        <td contenteditable="true">${evento}</td>
+        <td contenteditable="true">${data}</td>
+        <td>${numeroSequencial}</td>
+        <td contenteditable="true">${subtotal.toFixed(2).replace(".", ",")}</td>
+        <td><button class="btn-danger" onclick="removerLinha(this)">Excluir</button></td>
+    `;
+
+    novaLinha.cells[0].addEventListener("input", atualizarTotais);
+    novaLinha.cells[1].addEventListener("input", atualizarTotais);
+    novaLinha.cells[3].addEventListener("input", atualizarTotais);
+
+    atualizarTotais();
+}
+
+function removerLinha(botao) {
+    botao.closest("tr").remove();
+    atualizarNumeracao();
+    atualizarTotais();
+}
+
+function atualizarNumeracao() {
+    document.querySelectorAll("#tabela-eventos tbody tr").forEach((linha, index) => {
+        linha.cells[2].innerText = index + 1;
+    });
+}
+
+// Inicialização
+carregarTabela();
+</script>
 
 <div class="footer-note">
     <p>Contato para dúvidas: (99) 98128-9199</p>
@@ -144,6 +243,3 @@
     © 2025 Todos os direitos reservados | CNPJ 55996625000147 
     | Razão Social 55.996.625 Dyogo Santos Leal
 </footer>
-
-</body>
-</html>
