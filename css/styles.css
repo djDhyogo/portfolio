@@ -2,8 +2,8 @@
 :root {
     --cor-fundo: #211e1e;
     --cor-texto: #F5F5F5;
-    --cor-destaque: #D4AF37;
-    --cor-destaque-escuro: #B28F2C;
+    --cor-destaque: #E9FF2B;
+    --cor-destaque-escuro: #09EAFE;
     --cor-header: #000000;
     --cor-link: #2f4f4f;
     --cor-link-hover: #e0e0e0;
@@ -15,12 +15,38 @@
     --cor-footer-texto: #B0B0B0;
 }
 
+:root{
+
+/* Cores principais baseadas no site original */
+--color-primary: #E9FF2B;
+--color-secondary: #09EAFE;
+--color-accent: #F3FF30;
+--color-dark: #000000;
+--color-light: #FFFFFF;
+--color-gray: #696969;
+--color-gray-light: #F1F1F1;
+--color-gray-dark: #333333;
 /* Layout Geral */
+}
 
 
 .mylogo  {
     width: 450px;
     height: 85px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.6s ease-out;
+}
+
+.mylogo.animate {
+    animation: zoomIn 0.8s ease-out forwards;
+}
+
+@media (max-width: 768px) {
+    .mylogo {
+        width: 250px;
+        height: auto;
+    }
 }
 
 body {
@@ -51,22 +77,7 @@ header p {
     margin-top: 0.5rem;
 }
 
-nav {
-    background-color: var(--cor-destaque);
-    text-align: center;
-    padding: 1% 0;
-}
 
-nav a {
-    color: var(--cor-link);
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    color: var(--cor-link-hover);
-}
 
 section {
     padding: 1rem 1.5rem;
@@ -137,15 +148,30 @@ li::before {
 }
 
 /* Imagem da logo */
+/* Ícone Instagram Font Awesome */
 .logo-instagram {
+    color: var(--cor-destaque);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 165px;
     width: 165px;
     height: auto;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .logo-instagram {
+        width: 150px; /* Diminui a logo no mobile */
+    }
 }
 
 /* Animação ao passar o mouse na logo */
 .logo-link:hover .logo-instagram {
     transform: scale(1.2);
+    filter: drop-shadow(0px 0px 8px var(--cor-destaque));
 }
 
 /* Área dos botões */
@@ -202,22 +228,23 @@ li::before {
     bottom: 50px;
     right: 20px;
     background-color: var(--cor-destaque);
-    color: var(--cor-texto);
+    color: var(--cor-footer);
     border-radius: 50%;
     width: 60px;
     height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-decoration: none;
     z-index: 1000;
-    animation: bounce 2s infinite ease-in-out;
+    animation: bounce 3s infinite ease-in-out;
+    filter: drop-shadow(0px 0px 4px var(--cor-destaque));
+    font-size: 45px;
 }
 
 .whatsapp-button i {
-    font-size: 45px;
-    animation: bounce 2.5s infinite ease-in-out;
+    transform: scale(1.2);
+    animation: bounce 3s infinite ease-in-out;
 }
 
 @keyframes bounce {
@@ -377,7 +404,7 @@ nav a {
 }
 
 nav a:hover {
-    color: var(--cor-link-hover);
+    color: var(--cor-btn-hover);
 }
 
 section {
