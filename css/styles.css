@@ -1,3 +1,16 @@
+/* Animação global de entrada para todos os elementos */
+.animar-entrada {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    animation: entradaAnimada 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes entradaAnimada {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 /* ===== Efeito visual para seção Elementor ===== */
 .elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default {
     opacity: 0;
