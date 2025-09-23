@@ -1,3 +1,4 @@
+
 /* Variáveis CSS */
 :root {
     --cor-fundo: #211e1e;
@@ -35,8 +36,34 @@
     gap: 2rem;
     justify-content: center;
     align-items: center;
-    margin: 2.5rem 0 2.5rem 0;
+        margin: 2.5rem 0 2.5rem 0;
 }
+
+@media (max-width: 600px) {
+        .social-circles {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 0.7rem;
+            margin: 1.2rem 0 1.2rem 0;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100vw;
+            max-width: 100vw;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        .social-btn {
+            width: 28px;
+            height: 28px;
+            font-size: 0.9rem;
+            min-width: 28px;
+            min-height: 28px;
+            padding: 0;
+        }
+}
+
 .social-btn {
     display: flex;
     align-items: center;
@@ -62,8 +89,67 @@
     pointer-events: none;
 }
 
+/* ===== TRACKS AND DJ SETS ===== */
+.tracks-title {
+    color: #e9ff2b;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+.tracks-bloco {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.tracks-linha {
+    border: none;
+    border-top: 2px solid #e9ff2b;
+    width: 500px;
+    margin: 0 auto 2rem auto;
+    opacity: 0.7;
+}
+.tracks-linha:last-child {
+    margin: 2rem auto 0 auto;
+}
+.tracks-icone {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #e9ff2b;
+    text-align: center;
+}
+.tracks-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.tracks-lista li {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+    color: #fff;
+    font-weight: 500;
+}
+@media (max-width: 600px) {
+    .tracks-linha, .tracks-lista {
+        width: 95vw;
+        max-width: 98vw;
+    }
+    .tracks-title {
+        font-size: 1.5rem;
+    }
+    .tracks-lista li {
+        font-size: 1rem;
+    }
+}
 
 
+/* ===== mylogo ===== */
 .mylogo  {
     width: 450px;
     height: 85px;
