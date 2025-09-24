@@ -6,11 +6,11 @@ window.addEventListener('DOMContentLoaded', function () {
     const isWhatsappBtn = el.classList?.contains('whatsapp-button');
     const isWhatsappIcon =
       el.parentElement?.classList?.contains('whatsapp-button');
-  const isBackToTop = el.classList?.contains('back-to-top');
-  const inHeroBtn = el.classList?.contains('hero-btn') || el.closest?.('.hero-btn');
-  const isLogo = el.classList?.contains('mylogo');
+    const isBackToTop = el.classList?.contains('back-to-top');
+    const inHeroBtn = el.classList?.contains('hero-btn') || el.closest?.('.hero-btn');
+    const isLogo = el.classList?.contains('mylogo');
     // Ignora também elementos fixos de UI e os botões do HERO que terão animação própria
-  return isWhatsappBtn || isWhatsappIcon || isBackToTop || inHeroBtn || isLogo;
+    return isWhatsappBtn || isWhatsappIcon || isBackToTop || inHeroBtn || isLogo;
   }
 
   // Preferência de redução de movimento (usada globalmente)

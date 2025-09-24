@@ -13,6 +13,16 @@
     --cor-parcerias-texto: #555555;
     --cor-footer: #2e2e2e;
     --cor-footer-texto: #b0b0b0;
+
+    /* Paleta adicional (consolidada) */
+    --color-primary: #e9ff2b;
+    --color-secondary: #09eafe;
+    --color-accent: #f3ff30;
+    --color-dark: #000000;
+    --color-light: #ffffff;
+    --color-gray: #696969;
+    --color-gray-light: #f1f1f1;
+    --color-gray-dark: #333333;
 }
 
 /* ===== HERO (capa) ===== */
@@ -251,18 +261,7 @@
     }
 }
 
-:root {
-    /* Cores principais baseadas no site original */
-    --color-primary: #e9ff2b;
-    --color-secondary: #09eafe;
-    --color-accent: #f3ff30;
-    --color-dark: #000000;
-    --color-light: #ffffff;
-    --color-gray: #696969;
-    --color-gray-light: #f1f1f1;
-    --color-gray-dark: #333333;
-    /* Layout Geral */
-}
+/* Layout Geral */
 
 /* Estado base: visível */
 .animar-visivel {
@@ -282,7 +281,7 @@
 
 /* Estado de entrada: animando para aparecer */
 .animar-entrada {
-    opacity: 10;
+    opacity: 0;
     transform: translateY(40px) scale(0.95);
     animation: entradaAnimada 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
@@ -315,8 +314,40 @@
 @media (prefers-reduced-motion: reduce) {
     .motion-effect {
         transition: none;
+        transform: none;
+        opacity: 1;
+    }
+
+    /* Desativar animações e garantir visibilidade dos elementos animados */
+    .animate,
+    .hero .hero-actions .hero-btn.animate,
+    .elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default.animate,
+    .galeria img.animate,
+    .btn.animate,
+    .hero-arrow,
+    .whatsapp-button,
+    
+    .whatsapp-button i {
+        animation: none !important;
+        transition: none !important;
+    }
+
+
+    .galeria img,
+    .btn.animate,
+    .hero .hero-actions .hero-btn {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }
+
+
+.logo_orcamento {
+    width: 300px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
 
 /* ===== Efeito visual para seção Elementor ===== */
 .elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default {
@@ -473,10 +504,64 @@ header p {
     margin-top: 0.5rem;
 }
 
+/* Navegação principal */
+nav {
+    background-color: var(--cor-destaque);
+    text-align: center;
+    padding: 0.75rem 0;
+}
+
+nav a {
+    color: var(--cor-link);
+    margin: 0 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--cor-btn-hover);
+}
+
 section {
     padding: 1rem 1.5rem;
     max-width: 960px;
     margin: auto;
+}
+
+/* ===== Orçamento (orcamento.html) ===== */
+.container {
+    padding: 20px;
+    max-width: 700px;
+    margin: auto;
+}
+
+.orcamento {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 15px rgba(255, 208, 0, 0.25);
+}
+
+.orcamento h2 {
+    color: var(--cor-titulo-secao);
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.cliente-info {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cliente-info span {
+    font-weight: bold;
+    color: var(--cor-destaque);
+    flex-shrink: 0;
 }
 
 .quote {
@@ -515,15 +600,14 @@ li::before {
 }
 
 .galeria img,
-.btn {
+.btn.animate {
     opacity: 0;
     transform: scale(0.9);
     transition: all 0.6s ease-out;
 }
 
 .galeria img.animate,
-.btn.animate,
-.btn {
+.btn.animate {
     animation: zoomIn 0.8s ease-out forwards;
 }
 
@@ -824,133 +908,82 @@ footer {
     background: rgba(0, 0, 0, 0.9);
 }
 
-/* corrigir a impressão  os objetos não estão visíveis */
+/* Impressão: garantir visibilidade de todos os elementos e neutralizar animações */
 @media print {
-    .btn {
-        display: none;
-    }
 
-    .item input,
-    .cliente-info input {
-        border: none;
-        background: none;
-        color: var(--cor-texto);
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        padding: 0;
-    }
-
-    header {
-        padding: 2;
-    }
-
-    footer {
-        background-color: var(--cor-footer);
-        width: 100%;
-        text-align: center;
-        padding: 8px;
-        font-size: 0.8rem;
-        color: var(--cor-footer-texto);
-    }
-
-    button,
+    /* Mostrar tudo que poderia estar oculto por padrão em telas */
+    .no-print,
     .btn,
-    .btn-danger {
-        display: none !important;
+    .btn-danger,
+    button,
+    .back-to-top,
+    .whatsapp-button,
+    .hero .hero-actions .hero-btn,
+    .logo_orcamento,
+    .galeria img,
+    footer,
+    #tabela-eventos th,
+    #tabela-eventos td {
+        display: initial !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
+    /* Animações e transforms não devem afetar impressão */
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+
+    /* Garantir que colunas escondidas apareçam */
     #tabela-eventos th:nth-child(5),
     #tabela-eventos td:nth-child(5) {
-        display: none;
+        display: table-cell !important;
+    }
+
+    /* Layout do rodapé na impressão */
+    footer {
+        position: fixed !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        text-align: center !important;
+        padding: 8px !important;
+        font-size: 0.9rem !important;
+        background: var(--cor-footer) !important;
+        color: var(--cor-footer-texto) !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Componentes que no site são "escondidos" por opacidade */
+    .back-to-top,
+    .back-to-top.show,
+    .hero .hero-actions .hero-btn,
+    .btn.animate,
+    .galeria img.animate,
+    .mylogo.animate {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Evitar elementos fixos sobrepondo conteúdo na impressão */
+    .whatsapp-button,
+    .back-to-top {
+        position: static !important;
+        bottom: auto !important;
+        right: auto !important;
+        box-shadow: none !important;
+        filter: none !important;
     }
 }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-}
-
-header {
-    background-color: var(--cor-header);
-    color: var(--cor-texto);
-    padding: 2rem 1rem;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 3rem;
-}
-
-header p {
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
-}
-
-nav {
-    background-color: var(--cor-destaque);
-    text-align: center;
-    padding: 1% 0;
-}
-
-nav a {
-    color: var(--cor-link);
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav a:hover {
-    color: var(--cor-btn-hover);
-}
-
-section {
-    padding: 1rem 1.5rem;
-    max-width: 960px;
-    margin: auto;
-    flex: 1 0 auto;
-    /* Permite que o conteúdo cresça, mas não o footer */
-}
-
-/* (removido) ajuste mobile da mylogo; centralizado no final */
-.container {
-    padding: 20px;
-    max-width: 700px;
-    margin: auto;
-}
-
-.orcamento {
-    background-color: #1a1a1a;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 0 15px rgba(255, 208, 0, 0.429);
-}
-
-.orcamento h2 {
-    color: var(--cor-titulo-secao);
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-
-/* (removido) bloco mobile 500px; centralizado no final */
-.cliente-info {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.cliente-info span {
-    font-weight: bold;
-    color: var(--cor-destaque);
-    flex-shrink: 0;
-}
 
 /* ===================== MEDIA QUERIES CENTRALIZADAS ===================== */
 
