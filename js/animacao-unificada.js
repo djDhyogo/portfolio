@@ -1,176 +1,124 @@
 // Animação global de entrada/saída harmonizada + animação da logo + animação Elementor
 window.addEventListener('DOMContentLoaded', function () {
-  // --- Animação global de entrada/saída ---
-  var todos = document.body.querySelectorAll('*');
-  var ignorar = function (el) {
-    var isWhatsappBtn = el.classList && el.classList.contains('whatsapp-button');
-    var isWhatsappIcon = el.parentElement && el.parentElement.classList && el.parentElement.classList.contains('whatsapp-button');
-    var isBackTop = el.classList && el.classList.contains('back-to-top');
-    var isMotionEffect = el.classList && el.classList.contains('motion-effect');
-    var isLogo = el.classList && el.classList.contains('mylogo');
-    return isWhatsappBtn || isWhatsappIcon || isBackTop || isMotionEffect || isLogo;
-  };
-  todos.forEach(function (el) {
-    if (
+  // --- Função para ignorar elementos específicos (ex: botão do WhatsApp) ---
+  function ignorar(el) {
+    if (!el) return false;
+    const isWhatsappBtn = el.classList?.contains('whatsapp-button');
+    const isWhatsappIcon =
+      el.parentElement?.classList?.contains('whatsapp-button');
+  const isBackToTop = el.classList?.contains('back-to-top');
+  // Ignora também elementos fixos de UI que não devem animar
+  return isWhatsappBtn || isWhatsappIcon || isBackToTop;
+  }
+
+  // --- Seleciona todos os elementos elegíveis ---
+  const todos = Array.from(document.body.querySelectorAll('*')).filter(
+    el =>
       el.offsetParent !== null &&
       el.tagName !== 'SCRIPT' &&
       el.tagName !== 'STYLE' &&
       !ignorar(el)
-    ) {
-      el.classList.add('animar-saida');
-    }
+  );
+
+  // Define estado inicial de saída
+  todos.forEach(el => {
+    el.classList.add('animar-saida');
+    el.dataset.state = 'saida'; // controla estado atual
   });
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!ignorar(entry.target)) {
-        if (entry.isIntersecting) {
-          entry.target.classList.remove('animar-saida');
-          entry.target.classList.remove('animar-visivel');
-          entry.target.classList.add('animar-entrada');
-          setTimeout(function () {
-            entry.target.classList.remove('animar-entrada');
-            entry.target.classList.add('animar-visivel');
-          }, 900);
-        } else {
-          entry.target.classList.remove('animar-entrada');
-          entry.target.classList.remove('animar-visivel');
-          entry.target.classList.add('animar-saida');
+
+  // --- Observer para entrada/saída ---
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        if (ignorar(el)) return;
+
+        const current = el.dataset.state;
+
+        if (entry.isIntersecting && current !== 'visivel') {
+          // Entrando em tela
+          el.classList.remove('animar-saida', 'animar-visivel');
+          el.classList.add('animar-entrada');
+          el.dataset.state = 'entrada';
+
+          // Quando a animação de entrada termina → vira "visivel"
+          el.addEventListener(
+            'animationend',
+            () => {
+              el.classList.remove('animar-entrada');
+              el.classList.add('animar-visivel');
+              el.dataset.state = 'visivel';
+            },
+            { once: true }
+          );
+        } else if (!entry.isIntersecting && current === 'visivel') {
+          // Saindo da tela
+          el.classList.remove('animar-entrada', 'animar-visivel');
+          el.classList.add('animar-saida');
+          el.dataset.state = 'saida';
         }
-      }
-    });
-  }, { threshold: 0.15 });
-  todos.forEach(function (el) {
-    if (
-      el.offsetParent !== null &&
-      el.tagName !== 'SCRIPT' &&
-      el.tagName !== 'STYLE' &&
-      !ignorar(el)
-    ) {
-      observer.observe(el);
-    }
-  });
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  todos.forEach(el => observer.observe(el));
 
   // --- Animação da logo principal ---
-  var logo = document.querySelector('.mylogo');
+  const logo = document.querySelector('.mylogo');
   if (logo) {
-    setTimeout(function () {
+    setTimeout(() => {
       logo.classList.add('animate');
     }, 100);
-    // Após a animação de entrada, removemos a classe para evitar conflito com o controle via JS
-    logo.addEventListener('animationend', function () {
-      if (logo) {
-        logo.classList.remove('animate');
-        // Garante que o estilo animado finalize em estado visível antes do controle por scroll
-        logo.style.opacity = '1';
-        logo.style.transform = 'translate3d(0, 0, 0) scale(1)';
-      }
-    }, { once: true });
-    function handleScroll() {
-      if (!logo) return;
-      // Respeita preferências de redução de movimento
-      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) return;
 
-      var start = 0.50; // ponto de início da transição (percentual do documento)
-      var end = 0.81;   // ponto final da transição
-      var maxTranslate = 160; // px (equivalente a 1.6 * 100)
-      var scrollY = window.scrollY || window.pageYOffset;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var scrollPercent = docHeight > 0 ? scrollY / docHeight : 0;
+    function handleScroll() {
+      const start = 0.37;
+      const end = 0.81;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? scrollY / docHeight : 0;
+
       if (scrollPercent >= start && scrollPercent <= end) {
-        var progress = (scrollPercent - start) / (end - start);
-        var translateY = progress * maxTranslate;
-        var opacity = 1 - progress;
-        logo.style.transform = `translate3d(0, ${translateY}px, 0) scale(1)`;
-        logo.style.opacity = String(opacity);
+        const progress = (scrollPercent - start) / (end - start);
+        const translateY = progress * 1.6 * 100;
+        logo.style.transform = `scale(1) translateY(${translateY}px)`;
       } else if (scrollPercent < start) {
-        logo.style.transform = 'translate3d(0, 0px, 0) scale(1)';
-        logo.style.opacity = '1';
+        logo.style.transform = 'scale(1) translateY(0px)';
       } else {
-        logo.style.transform = `translate3d(0, ${maxTranslate}px, 0) scale(1)`;
-        logo.style.opacity = '0';
+        logo.style.transform = `scale(1) translateY(${1.6 * 100}px)`;
       }
     }
+
     window.addEventListener('scroll', handleScroll);
-    // Aplica estado inicial
-    handleScroll();
   }
 
   // --- Animação para seções do Elementor ---
-  var elSections = document.querySelectorAll('.elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default');
-  elSections.forEach(function (section) {
-    setTimeout(function () {
+  const elSections = document.querySelectorAll(
+    '.elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default'
+  );
+  elSections.forEach(section => {
+    setTimeout(() => {
       section.classList.add('animate');
     }, 100);
   });
 
-  // --- Efeito de movimento e opacidade no scroll (motion-effect) ---
-  // Cache dos elementos e RAF para performance
-  var motionNodes = Array.prototype.slice.call(document.querySelectorAll('.motion-effect'));
-  var ticking = false;
-
-  function clamp01(v) {
-    return v < 0 ? 0 : (v > 1 ? 1 : v);
-  }
-
-  function readMotionDistance(el) {
-    // Lê a distância configurável por elemento (CSS var --motion-distance)
-    var styles = window.getComputedStyle(el);
-    var val = styles.getPropertyValue('--motion-distance').trim();
-    // Extrai número base (px), fallback 30
-    var n = parseFloat(val || '30');
-    return isNaN(n) ? 30 : n;
-  }
-
-  function updateMotionFrame() {
-    ticking = false;
-    if (!motionNodes.length) return;
-    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    for (var i = 0; i < motionNodes.length; i++) {
-      var el = motionNodes[i];
-      var rect = el.getBoundingClientRect();
-      var percent = clamp01(1 - rect.top / windowHeight);
-      var distance = readMotionDistance(el);
-      var translateY = distance - percent * distance;
-      el.style.setProperty('--translateY', translateY + 'px');
-      el.style.opacity = String(percent);
-
-      if (rect.bottom < 0 || rect.top > windowHeight) {
-        el.style.setProperty('--translateY', distance + 'px');
-        el.style.opacity = '0';
-      }
-    }
-  }
-
-  function requestTick() {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(updateMotionFrame);
-    }
-  }
-
-  // Listeners para atualizar a animação
-  window.addEventListener('scroll', requestTick, { passive: true });
-  window.addEventListener('resize', requestTick);
-  // Primeira atualização após o DOM pronto
-  requestTick();
-
   // --- Botão Voltar ao Topo ---
-  var topBtn = document.querySelector('.back-to-top');
+  const topBtn = document.querySelector('.back-to-top');
   if (topBtn) {
-    function syncTopBtnVisibility() {
-      var y = window.scrollY || window.pageYOffset;
-      var isSmall = (window.innerWidth || document.documentElement.clientWidth) <= 768;
-      var threshold = isSmall ? 120 : 300;
-      if (y > threshold) {
-        topBtn.classList.add('show');
-      } else {
-        topBtn.classList.remove('show');
-      }
-    }
+    const syncTopBtnVisibility = () => {
+      const y = window.scrollY || window.pageYOffset;
+      const isSmall = (window.innerWidth || document.documentElement.clientWidth) <= 768;
+      const threshold = isSmall ? 120 : 300;
+      if (y > threshold) topBtn.classList.add('show');
+      else topBtn.classList.remove('show');
+    };
     window.addEventListener('scroll', syncTopBtnVisibility, { passive: true });
+    window.addEventListener('resize', syncTopBtnVisibility);
+    // Estado inicial
     syncTopBtnVisibility();
-    topBtn.addEventListener('click', function() {
+    // Ação de clique
+    topBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
