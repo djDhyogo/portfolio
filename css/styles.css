@@ -87,11 +87,10 @@
         /* Removido width: 100vw e max-width: 100vw para evitar excesso de largura */
     }
     .social-btn {
-        width: 48px;
-        height: 48px;
-        font-size: 1.6rem;
-        min-width: 48px;
-        min-height: 48px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+        line-height: 1;
         padding: 0;
         margin: 0;
         border-radius: 50%;
