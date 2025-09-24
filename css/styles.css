@@ -27,6 +27,7 @@
     --color-gray-dark: #333333;
     /* Layout Geral */
 }
+
 /* Estado base: visível */
 .animar-visivel {
     opacity: 1;
@@ -45,7 +46,7 @@
 
 /* Estado de entrada: animando para aparecer */
 .animar-entrada {
-    opacity: 0;
+    opacity: 10;
     transform: translateY(40px) scale(0.95);
     animation: entradaAnimada 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
@@ -92,7 +93,6 @@
     animation: zoomIn 0.8s ease-out forwards;
 }
 
-
 /* ===== Social Circles ===== */
 .social-circles {
     display: flex;
@@ -101,8 +101,6 @@
     align-items: center;
     margin: 2.5rem 0 2.5rem 0;
 }
-
-/* media queries centralizadas ao final */
 
 .social-btn {
     display: flex;
@@ -146,6 +144,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 2rem;
+    margin-left: 1.5rem;
 }
 
 .tracks-linha {
@@ -184,8 +183,6 @@
     font-weight: 500;
 }
 
-/* media queries centralizadas ao final */
-
 /* ===== mylogo ===== */
 .mylogo {
     width: 450px;
@@ -199,8 +196,6 @@
 .mylogo.animate {
     animation: zoomIn 0.8s ease-out forwards;
 }
-
-/* media queries centralizadas ao final */
 
 body {
     font-family: Arial, sans-serif;
@@ -321,8 +316,6 @@ li::before {
     vertical-align: middle;
 }
 
-/* media queries centralizadas ao final */
-
 /* Animação ao passar o mouse na logo */
 .logo-link:hover .logo-instagram {
     transform: scale(1.2);
@@ -335,8 +328,6 @@ li::before {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
-
-/* media queries centralizadas ao final */
 
 .btn:hover {
     background-color: var(--cor-btn-hover);
@@ -352,7 +343,6 @@ li::before {
 .contato a:hover {
     color: var(--cor-btn-hover);
 }
-
 
 .parcerias {
     background-color: var(--cor-parcerias);
@@ -559,7 +549,6 @@ footer {
     }
 }
 
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -654,18 +643,23 @@ section {
         width: 250px;
         height: auto;
     }
+
     .logo-instagram {
-        width: 120px; /* ícone grande porém proporcional no mobile */
+        width: 120px;
+        /* ícone grande porém proporcional no mobile */
         font-size: 120px;
         flex: 0 0 auto;
     }
+
     .reels-container {
-        flex-direction: row; /* lado a lado como na imagem */
+        flex-direction: row;
+        /* lado a lado como na imagem */
         align-items: center;
         justify-content: space-between;
         text-align: left;
         gap: 1rem;
     }
+
     .reels-buttons {
         display: grid;
         grid-template-columns: repeat(2, minmax(120px, 1fr));
@@ -673,6 +667,7 @@ section {
         width: auto;
         max-width: none;
     }
+
     .reels-buttons .btn {
         background: var(--color-primary, #e9ff2b);
         color: #111;
@@ -692,6 +687,7 @@ section {
         justify-content: center;
         align-items: center;
     }
+
     .social-btn {
         width: 32px;
         height: 32px;
@@ -700,24 +696,58 @@ section {
         padding: 0;
         margin: 0;
     }
+
     .tracks-linha,
     .tracks-lista {
         width: 95vw;
         max-width: 98vw;
     }
-    .tracks-title { font-size: 1.5rem; }
-    .tracks-lista li { font-size: 1rem; }
-    .contato { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; font-size: 1rem; padding: 2rem 0; }
-    .contato a { padding: 4px 0; font-size: 1rem; display: block; width: 100%; }
+
+    .tracks-title {
+        font-size: 1.5rem;
+    }
+
+    .tracks-lista li {
+        font-size: 1rem;
+    }
+
+    .contato {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        font-size: 1rem;
+        padding: 2rem 0;
+        margin-left: 1.5rem;
+    }
+
+    .contato a {
+        padding: 4px 0;
+        font-size: 1rem;
+        display: block;
+        width: 100%;
+    }
 
     /* Regras que antes estavam em 500px, agora abrangidas por 576px */
-    .item { flex-direction: column; gap: 5px; }
-    .total { text-align: left; }
-    .cliente-info { flex-direction: column; gap: 5px; }
-    .nome-contratante, .cpf-cnpj { width: 100%; }
+    .item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .total {
+        text-align: left;
+    }
+
+    .cliente-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .nome-contratante,
+    .cpf-cnpj {
+        width: 100%;
+    }
 }
-
-
 
 .item {
     margin: 10px 0;
@@ -798,5 +828,3 @@ footer {
     font-size: 0.8rem;
     color: var(--cor-footer-texto);
 }
-
-/* media queries centralizadas ao final */
