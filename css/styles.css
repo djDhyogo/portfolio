@@ -433,6 +433,12 @@
     animation: zoomIn 0.8s ease-out forwards;
 }
 
+/* Estado final persistente após a animação da logo */
+.mylogo.ready {
+    opacity: 1;
+    transform: scale(1);
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
