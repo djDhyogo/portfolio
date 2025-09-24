@@ -1,15 +1,16 @@
 // Animação global de entrada/saída harmonizada + animação da logo + animação Elementor
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
   // --- Animação global de entrada/saída ---
   var todos = document.body.querySelectorAll('*');
-  var ignorar = function(el) {
+  var ignorar = function (el) {
     var isWhatsappBtn = el.classList && el.classList.contains('whatsapp-button');
     var isWhatsappIcon = el.parentElement && el.parentElement.classList && el.parentElement.classList.contains('whatsapp-button');
-  var isMotionEffect = el.classList && el.classList.contains('motion-effect');
-  var isLogo = el.classList && el.classList.contains('mylogo');
-  return isWhatsappBtn || isWhatsappIcon || isMotionEffect || isLogo;
+    var isBackTop = el.classList && el.classList.contains('back-to-top');
+    var isMotionEffect = el.classList && el.classList.contains('motion-effect');
+    var isLogo = el.classList && el.classList.contains('mylogo');
+    return isWhatsappBtn || isWhatsappIcon || isBackTop || isMotionEffect || isLogo;
   };
-  todos.forEach(function(el) {
+  todos.forEach(function (el) {
     if (
       el.offsetParent !== null &&
       el.tagName !== 'SCRIPT' &&
@@ -19,14 +20,14 @@ window.addEventListener('DOMContentLoaded', function() {
       el.classList.add('animar-saida');
     }
   });
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
       if (!ignorar(entry.target)) {
         if (entry.isIntersecting) {
           entry.target.classList.remove('animar-saida');
           entry.target.classList.remove('animar-visivel');
           entry.target.classList.add('animar-entrada');
-          setTimeout(function() {
+          setTimeout(function () {
             entry.target.classList.remove('animar-entrada');
             entry.target.classList.add('animar-visivel');
           }, 900);
@@ -38,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function() {
       }
     });
   }, { threshold: 0.15 });
-  todos.forEach(function(el) {
+  todos.forEach(function (el) {
     if (
       el.offsetParent !== null &&
       el.tagName !== 'SCRIPT' &&
@@ -52,11 +53,11 @@ window.addEventListener('DOMContentLoaded', function() {
   // --- Animação da logo principal ---
   var logo = document.querySelector('.mylogo');
   if (logo) {
-    setTimeout(function() {
+    setTimeout(function () {
       logo.classList.add('animate');
     }, 100);
     // Após a animação de entrada, removemos a classe para evitar conflito com o controle via JS
-    logo.addEventListener('animationend', function() {
+    logo.addEventListener('animationend', function () {
       if (logo) {
         logo.classList.remove('animate');
         // Garante que o estilo animado finalize em estado visível antes do controle por scroll
@@ -97,8 +98,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
   // --- Animação para seções do Elementor ---
   var elSections = document.querySelectorAll('.elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default');
-  elSections.forEach(function(section) {
-    setTimeout(function() {
+  elSections.forEach(function (section) {
+    setTimeout(function () {
       section.classList.add('animate');
     }, 100);
   });
@@ -153,4 +154,22 @@ window.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('resize', requestTick);
   // Primeira atualização após o DOM pronto
   requestTick();
+
+  // --- Botão Voltar ao Topo ---
+  var topBtn = document.querySelector('.back-to-top');
+  if (topBtn) {
+    function syncTopBtnVisibility() {
+      var y = window.scrollY || window.pageYOffset;
+      if (y > 300) {
+        topBtn.classList.add('show');
+      } else {
+        topBtn.classList.remove('show');
+      }
+    }
+    window.addEventListener('scroll', syncTopBtnVisibility, { passive: true });
+    syncTopBtnVisibility();
+    topBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 });
