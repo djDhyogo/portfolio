@@ -108,6 +108,23 @@
     transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Estado inicial oculto para animação de entrada dos botões do HERO */
+.hero .hero-actions .hero-btn {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* Dispara a mesma animação utilizada na mylogo */
+.hero .hero-actions .hero-btn.animate {
+    animation: zoomIn 0.7s ease-out forwards;
+}
+
+/* Estado final persistente após a animação */
+.hero .hero-actions .hero-btn.ready {
+    opacity: 1;
+    transform: scale(1);
+}
+
 .hero-btn:hover {
     transform: scale(1.06);
     background: #111;

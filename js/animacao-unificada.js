@@ -7,9 +7,15 @@ window.addEventListener('DOMContentLoaded', function () {
     const isWhatsappIcon =
       el.parentElement?.classList?.contains('whatsapp-button');
   const isBackToTop = el.classList?.contains('back-to-top');
-  // Ignora também elementos fixos de UI que não devem animar
-  return isWhatsappBtn || isWhatsappIcon || isBackToTop;
+  const inHeroBtn = el.classList?.contains('hero-btn') || el.closest?.('.hero-btn');
+  const isLogo = el.classList?.contains('mylogo');
+    // Ignora também elementos fixos de UI e os botões do HERO que terão animação própria
+  return isWhatsappBtn || isWhatsappIcon || isBackToTop || inHeroBtn || isLogo;
   }
+
+  // Preferência de redução de movimento (usada globalmente)
+  const reduceMotion =
+    !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   // --- Seleciona todos os elementos elegíveis ---
   const todos = Array.from(document.body.querySelectorAll('*')).filter(
@@ -20,10 +26,18 @@ window.addEventListener('DOMContentLoaded', function () {
       !ignorar(el)
   );
 
-  // Define estado inicial de saída
+  // Define estado inicial: se estiver no viewport, já começa visível
+  const vh = window.innerHeight || document.documentElement.clientHeight;
   todos.forEach(el => {
-    el.classList.add('animar-saida');
-    el.dataset.state = 'saida'; // controla estado atual
+    const rect = el.getBoundingClientRect();
+    const inView = rect.bottom > 0 && rect.top < vh;
+    if (inView) {
+      el.classList.add('animar-visivel');
+      el.dataset.state = 'visivel';
+    } else {
+      el.classList.add('animar-saida');
+      el.dataset.state = 'saida';
+    }
   });
 
   // --- Observer para entrada/saída ---
@@ -91,7 +105,74 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('scroll', handleScroll);
+    // Marca estado final da animação para unificar com botões
+    logo.addEventListener('animationend', () => {
+      logo.classList.remove('animate');
+      logo.classList.add('ready');
+    }, { once: true });
   }
+
+  // --- Animação dos botões do HERO (mesmo efeito da logo) ---
+  const heroBtns = document.querySelectorAll('.hero .hero-actions .hero-btn');
+  if (heroBtns.length) {
+    heroBtns.forEach((btn, i) => {
+      if (reduceMotion) {
+        btn.style.opacity = '1';
+        btn.style.transform = 'none';
+        return;
+      }
+      setTimeout(() => {
+        btn.classList.add('animate');
+        btn.addEventListener('animationend', () => {
+          btn.classList.remove('animate');
+          btn.classList.add('ready');
+        }, { once: true });
+      }, 180 + i * 90);
+    });
+  }
+
+  // --- Fade-out no scroll (logo e botões com ordem escalonada) ---
+  const heroSection = document.querySelector('.hero');
+  let uiTicking = false;
+  const clamp01 = v => (v < 0 ? 0 : v > 1 ? 1 : v);
+
+  function updateHeroUiOnScroll() {
+    uiTicking = false;
+    if (reduceMotion || !heroSection) return;
+    const rect = heroSection.getBoundingClientRect();
+    const h = rect.height || heroSection.offsetHeight || window.innerHeight;
+    const intrahero = Math.min(Math.max(-rect.top, 0), h);
+    const base = clamp01(intrahero / (h * 0.6)); // base progress
+
+    // Ordem: logo primeiro (i=0), depois botões na ordem
+    const elements = [];
+    if (logo) elements.push({ el: logo, idx: 0 });
+    heroBtns.forEach((btn, i) => elements.push({ el: btn, idx: i + 1 }));
+
+    const stagger = 0.12; // atraso por item na progressão de sumiço
+    elements.forEach(({ el, idx }) => {
+      if (!el || !el.classList?.contains('ready')) return; // aplica só após animação de entrada
+      const local = clamp01(base - idx * stagger);
+      const fade = local; // 0..1
+      const opacity = 1 - fade;
+      const translate = 14 * fade;
+      el.style.opacity = String(opacity);
+      el.style.transform = `translateY(${translate}px) scale(1)`;
+    });
+  }
+
+  function requestUiTick() {
+    if (!uiTicking) {
+      uiTicking = true;
+      window.requestAnimationFrame(updateHeroUiOnScroll);
+    }
+  }
+
+  window.addEventListener('scroll', requestUiTick, { passive: true });
+  window.addEventListener('resize', requestUiTick);
+  // Estado inicial e após entradas
+  requestUiTick();
+  setTimeout(requestUiTick, 700);
 
   // --- Animação para seções do Elementor ---
   const elSections = document.querySelectorAll(
