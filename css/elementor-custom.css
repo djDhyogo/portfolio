@@ -5,7 +5,7 @@
   flex-direction: column;
   min-height: 1px;
   width: 100%;
-  background-image: url('https://djpro.site/wp-content/uploads/2024/01/CAPA-PRESS-KIT.jpg');
+  background-image: url("https://djpro.site/wp-content/uploads/2024/01/CAPA-PRESS-KIT.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,7 +13,10 @@
 }
 .elementor-background-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(16, 17, 19, 0.5); /* overlay escuro, ajuste se quiser */
   pointer-events: none;
   z-index: 1;

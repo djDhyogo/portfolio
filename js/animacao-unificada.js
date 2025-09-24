@@ -5,7 +5,9 @@ window.addEventListener('DOMContentLoaded', function() {
   var ignorar = function(el) {
     var isWhatsappBtn = el.classList && el.classList.contains('whatsapp-button');
     var isWhatsappIcon = el.parentElement && el.parentElement.classList && el.parentElement.classList.contains('whatsapp-button');
-    return isWhatsappBtn || isWhatsappIcon;
+  var isMotionEffect = el.classList && el.classList.contains('motion-effect');
+  var isLogo = el.classList && el.classList.contains('mylogo');
+  return isWhatsappBtn || isWhatsappIcon || isMotionEffect || isLogo;
   };
   todos.forEach(function(el) {
     if (
@@ -53,24 +55,44 @@ window.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       logo.classList.add('animate');
     }, 100);
+    // Após a animação de entrada, removemos a classe para evitar conflito com o controle via JS
+    logo.addEventListener('animationend', function() {
+      if (logo) {
+        logo.classList.remove('animate');
+        // Garante que o estilo animado finalize em estado visível antes do controle por scroll
+        logo.style.opacity = '1';
+        logo.style.transform = 'translate3d(0, 0, 0) scale(1)';
+      }
+    }, { once: true });
     function handleScroll() {
       if (!logo) return;
-      var start = 0.37;
-      var end = 0.81;
+      // Respeita preferências de redução de movimento
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      var start = 0.50; // ponto de início da transição (percentual do documento)
+      var end = 0.81;   // ponto final da transição
+      var maxTranslate = 160; // px (equivalente a 1.6 * 100)
       var scrollY = window.scrollY || window.pageYOffset;
       var docHeight = document.documentElement.scrollHeight - window.innerHeight;
       var scrollPercent = docHeight > 0 ? scrollY / docHeight : 0;
       if (scrollPercent >= start && scrollPercent <= end) {
         var progress = (scrollPercent - start) / (end - start);
-        var translateY = progress * 1.6 * 100;
-        logo.style.transform = `scale(1) translateY(${translateY}px)`;
+        var translateY = progress * maxTranslate;
+        var opacity = 1 - progress;
+        logo.style.transform = `translate3d(0, ${translateY}px, 0) scale(1)`;
+        logo.style.opacity = String(opacity);
       } else if (scrollPercent < start) {
-        logo.style.transform = 'scale(1) translateY(0px)';
+        logo.style.transform = 'translate3d(0, 0px, 0) scale(1)';
+        logo.style.opacity = '1';
       } else {
-        logo.style.transform = `scale(1) translateY(${1.6 * 100}px)`;
+        logo.style.transform = `translate3d(0, ${maxTranslate}px, 0) scale(1)`;
+        logo.style.opacity = '0';
       }
     }
     window.addEventListener('scroll', handleScroll);
+    // Aplica estado inicial
+    handleScroll();
   }
 
   // --- Animação para seções do Elementor ---
@@ -80,4 +102,55 @@ window.addEventListener('DOMContentLoaded', function() {
       section.classList.add('animate');
     }, 100);
   });
+
+  // --- Efeito de movimento e opacidade no scroll (motion-effect) ---
+  // Cache dos elementos e RAF para performance
+  var motionNodes = Array.prototype.slice.call(document.querySelectorAll('.motion-effect'));
+  var ticking = false;
+
+  function clamp01(v) {
+    return v < 0 ? 0 : (v > 1 ? 1 : v);
+  }
+
+  function readMotionDistance(el) {
+    // Lê a distância configurável por elemento (CSS var --motion-distance)
+    var styles = window.getComputedStyle(el);
+    var val = styles.getPropertyValue('--motion-distance').trim();
+    // Extrai número base (px), fallback 30
+    var n = parseFloat(val || '30');
+    return isNaN(n) ? 30 : n;
+  }
+
+  function updateMotionFrame() {
+    ticking = false;
+    if (!motionNodes.length) return;
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    for (var i = 0; i < motionNodes.length; i++) {
+      var el = motionNodes[i];
+      var rect = el.getBoundingClientRect();
+      var percent = clamp01(1 - rect.top / windowHeight);
+      var distance = readMotionDistance(el);
+      var translateY = distance - percent * distance;
+      el.style.setProperty('--translateY', translateY + 'px');
+      el.style.opacity = String(percent);
+
+      if (rect.bottom < 0 || rect.top > windowHeight) {
+        el.style.setProperty('--translateY', distance + 'px');
+        el.style.opacity = '0';
+      }
+    }
+  }
+
+  function requestTick() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateMotionFrame);
+    }
+  }
+
+  // Listeners para atualizar a animação
+  window.addEventListener('scroll', requestTick, { passive: true });
+  window.addEventListener('resize', requestTick);
+  // Primeira atualização após o DOM pronto
+  requestTick();
 });
