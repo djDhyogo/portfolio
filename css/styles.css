@@ -1,4 +1,18 @@
-/* Animação global de entrada para todos os elementos */
+/* Estado base: visível */
+.animar-visivel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Estado de saída: sumindo */
+.animar-saida {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Estado de entrada: animando para aparecer */
 .animar-entrada {
     opacity: 0;
     transform: translateY(40px) scale(0.95);
