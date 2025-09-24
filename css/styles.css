@@ -212,7 +212,6 @@ body {
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     max-width: 100vw;
-    overflow-x: hidden;
 }
 
 html {
