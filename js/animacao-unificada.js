@@ -160,7 +160,9 @@ window.addEventListener('DOMContentLoaded', function () {
   if (topBtn) {
     function syncTopBtnVisibility() {
       var y = window.scrollY || window.pageYOffset;
-      if (y > 300) {
+      var isSmall = (window.innerWidth || document.documentElement.clientWidth) <= 768;
+      var threshold = isSmall ? 120 : 300;
+      if (y > threshold) {
         topBtn.classList.add('show');
       } else {
         topBtn.classList.remove('show');
