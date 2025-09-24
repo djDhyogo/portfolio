@@ -17,16 +17,17 @@
 
 /* ===== HERO (capa) ===== */
 .hero {
-
     position: relative;
     min-height: 88vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #000 center/cover no-repeat;
-    background-position: center 18%; /* prioriza a parte superior da foto */
+    background-position: center 18%;
+    /* prioriza a parte superior da foto */
     overflow: hidden;
 }
+
 /* degradê superior e inferior para esconder início/fim da imagem */
 .hero::before,
 .hero::after {
@@ -38,27 +39,34 @@
     pointer-events: none;
     z-index: 1;
 }
-        .hero::before { /* topo + laterais */
-            top: 0;
-            bottom: 0; /* cobre toda a altura para permitir laterais */
-            height: auto; /* sobrescreve altura definida no grupo */
-            background:
-                /* topo mais presente, leve aumento */
-                linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 22%),
-                /* lateral esquerda (mais discreta no desktop) */
-                linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 12%),
-                /* lateral direita (mais discreta no desktop) */
-                linear-gradient(to left, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 12%);
-        }
-.hero::after { /* base */
+
+.hero::before {
+    /* topo + laterais */
+    top: 0;
     bottom: 0;
-    height: 34vh; /* aumenta a faixa inferior para mesclar melhor */
-    background: linear-gradient(
-        to top,
-    var(--cor-fundo, #211e1e) 0%,
-    rgba(0,0,0,0.85) 35%,
-    rgba(0,0,0,0) 75%
-    );
+    /* cobre toda a altura para permitir laterais */
+    height: auto;
+    /* sobrescreve altura definida no grupo */
+    background:
+        /* topo mais presente, leve aumento */
+        linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0) 22%),
+        /* lateral esquerda (mais discreta no desktop) */
+        linear-gradient(to right, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 12%),
+        /* lateral direita (mais discreta no desktop) */
+        linear-gradient(to left, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0) 12%);
+}
+
+.hero::after {
+    /* base */
+    bottom: 0;
+    height: 34vh;
+    /* aumenta a faixa inferior para mesclar melhor */
+    background: linear-gradient(to top,
+            var(--cor-fundo, #211e1e) 0%,
+            rgba(0, 0, 0, 0.85) 35%,
+            rgba(0, 0, 0, 0) 75%);
 }
 
 .hero-content {
@@ -75,7 +83,7 @@
 .hero .mylogo {
     width: min(88vw, 520px);
     height: auto;
-    filter: drop-shadow(0 4px 24px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.6));
 }
 
 .hero-actions {
@@ -83,6 +91,7 @@
     gap: 1.4rem;
     margin-top: 0.2rem;
 }
+
 .hero-btn {
     width: 68px;
     height: 68px;
@@ -96,8 +105,9 @@
     text-decoration: none;
     background: var(--color-primary, #e9ff2b);
     backdrop-filter: blur(2px);
-    transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
+
 .hero-btn:hover {
     transform: scale(1.06);
     background: #111;
@@ -106,64 +116,121 @@
 }
 
 .hero-arrow {
-    margin-top: .2rem;
+    margin-top: 0.2rem;
     color: var(--color-light, #ffffff);
     font-size: 28px;
     text-decoration: none;
     animation: arrowPulse 2.2s infinite;
 }
+
 @keyframes arrowPulse {
-    0%, 100% { transform: translateY(0); opacity: 0.9; }
-    50% { transform: translateY(8px); opacity: 0.6; }
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: translateY(8px);
+        opacity: 0.6;
+    }
 }
 
 .hero-social {
     position: absolute;
     bottom: calc(env(safe-area-inset-bottom, 0px) + 28px);
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: center;
     z-index: 2;
 }
+
 .hero-social .social-circles {
     gap: 1rem;
 }
+
 .hero-social .social-btn {
-    width: 54px; height: 54px; font-size: 1.6rem;
-    background: var(--color-primary, #e9ff2b); color: #111; border: none; box-shadow: none;
+    width: 54px;
+    height: 54px;
+    font-size: 1.6rem;
+    background: var(--color-primary, #e9ff2b);
+    color: #111;
+    border: none;
+    box-shadow: none;
 }
+
 .hero-social .social-btn:hover {
-    background: #111; color: var(--color-primary, #e9ff2b);
+    background: #111;
+    color: var(--color-primary, #e9ff2b);
 }
 
 @media (max-width: 576px) {
-    .hero { min-height: 88vh; background-position: center 12%; }
-    .hero .mylogo { width: min(86vw, 380px); }
-    .hero-btn { width: 58px; height: 58px; font-size: 22px; }
-    .hero-social .social-btn { width: 44px; height: 44px; font-size: 1.3rem; }
-    .hero-social { bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); }
-    .hero::before {
-        top: 0; bottom: 0; height: auto;
-        background:
-            linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 26%),
-            linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 16%),
-            linear-gradient(to left, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 16%);
+    .hero {
+        min-height: 88vh;
+        background-position: center 12%;
     }
+
+    .hero .mylogo {
+        width: min(86vw, 380px);
+    }
+
+    .hero-btn {
+        width: 58px;
+        height: 58px;
+        font-size: 22px;
+    }
+
+    .hero-social .social-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
+    }
+
+    .hero-social {
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
+    }
+
+    .hero::before {
+        top: 0;
+        bottom: 0;
+        height: auto;
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.9) 0%,
+                rgba(0, 0, 0, 0) 26%),
+            linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 16%),
+            linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 16%);
+    }
+
     .hero::after {
         height: 24vh;
-        background: linear-gradient(
-            to top,
-            var(--cor-fundo, #211e1e) 0%,
-            rgba(0,0,0,0.8) 35%,
-            rgba(0,0,0,0) 75%
-        );
+        background: linear-gradient(to top,
+                var(--cor-fundo, #211e1e) 0%,
+                rgba(0, 0, 0, 0.8) 35%,
+                rgba(0, 0, 0, 0) 75%);
     }
 }
 
 @media (min-width: 1024px) {
     .hero {
-    min-height: 86vh; /* aumenta a parte inferior visível */
-    background-position: center 14%;
+        min-height: 86vh;
+        /* aumenta a parte inferior visível */
+        background-position: center 14%;
+    }
+
+    /* Reels: mostrar imagem completa no desktop */
+    .reels {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center top;
+        min-height: 70vh;
+        padding: 3rem 0;
+        /* espaço para os ícones e título */
+    }
+
+    .reels::after {
+        height: 16vh;
     }
 }
 
@@ -453,6 +520,67 @@ li::before {
     flex-wrap: wrap;
 }
 
+/* ===== REELS (fundo com imagem + degradês) ===== */
+.reels {
+    position: relative;
+    background: #000 center/cover no-repeat;
+    overflow: hidden;
+}
+
+.reels::before,
+.reels::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.reels::before {
+    /* topo + laterais */
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0) 22%),
+        linear-gradient(to right, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0) 12%),
+        linear-gradient(to left, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0) 12%);
+}
+
+.reels::after {
+    /* base */
+    bottom: 0;
+    height: 24vh;
+    background: linear-gradient(to top,
+            var(--cor-fundo, #211e1e) 0%,
+            rgba(0, 0, 0, 0.8) 35%,
+            rgba(0, 0, 0, 0) 75%);
+}
+
+.reels>* {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .reels {
+        background-position: center 30%;
+    }
+
+    .reels::before {
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.78) 0%,
+                rgba(0, 0, 0, 0) 26%),
+            linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0) 16%),
+            linear-gradient(to left, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0) 16%);
+    }
+
+    .reels::after {
+        height: 28vh;
+    }
+}
+
 /* Imagem da logo */
 /* Ícone Instagram Font Awesome */
 .logo-instagram {
@@ -517,7 +645,8 @@ li::before {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    z-index: 2147483647; /* garantir sobreposição no mobile */
+    z-index: 2147483647;
+    /* garantir sobreposição no mobile */
     animation: bounce 3s infinite ease-in-out;
     filter: drop-shadow(0px 0px 4px var(--cor-destaque));
     font-size: 45px;
@@ -537,7 +666,8 @@ li::before {
 
 .back-to-top {
     position: fixed;
-    bottom: 130px; /* fallback desktop */
+    bottom: 130px;
+    /* fallback desktop */
     /* fica acima do WhatsApp */
     right: 26px;
     width: 52px;
@@ -578,8 +708,10 @@ li::before {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
     right: calc(env(safe-area-inset-right, 0px) + 16px);
 }
+
 .back-to-top {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 96px); /* 60px (whatsapp) + 16px gap + margem */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 96px);
+    /* 60px (whatsapp) + 16px gap + margem */
     right: calc(env(safe-area-inset-right, 0px) + 22px);
 }
 
