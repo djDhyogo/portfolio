@@ -583,7 +583,8 @@ ul {
     padding: 0;
 }
 
-li::before {
+/* Emoji apenas nas listas de tracks (não global) */
+.tracks-lista li::before {
     content: "🎵 ";
 }
 
@@ -848,6 +849,16 @@ footer {
     padding: 8px;
     font-size: 0.8rem;
     color: var(--cor-footer-texto);
+}
+
+footer a {
+    color: var(--cor-footer-texto);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: var(--cor-btn-hover);
 }
 
 #galeria-videos {
