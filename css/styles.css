@@ -332,7 +332,7 @@
         transition: none !important;
     }
 
-
+    .footer-note,
     .galeria img,
     .btn.animate,
     .hero .hero-actions .hero-btn {
@@ -923,7 +923,7 @@ footer a:hover {
 @media print {
 
     /* Mostrar tudo que poderia estar oculto por padrão em telas */
-    .no-print,
+    
     .btn,
     .btn-danger,
     button,
@@ -933,12 +933,8 @@ footer a:hover {
     .logo_orcamento,
     .galeria img,
     footer,
-    #tabela-eventos th,
-    #tabela-eventos td {
-        display: initial !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
+
+
 
     /* Animações e transforms não devem afetar impressão */
     *,
@@ -950,11 +946,7 @@ footer a:hover {
     }
 
 
-    /* Garantir que colunas escondidas apareçam */
-    #tabela-eventos th:nth-child(5),
-    #tabela-eventos td:nth-child(5) {
-        display: table-cell !important;
-    }
+
 
     /* Layout do rodapé na impressão */
     footer {
