@@ -1004,67 +1004,86 @@ footer a:hover {
     background: rgba(0, 0, 0, 0.9);
 }
 
-/* Impressão: garantir visibilidade de todos os elementos e neutralizar animações */
+/* Impressão: tudo visível, sem efeitos de animação e layout limpo para PDF */
 @media print {
-    /* Mostrar tudo que poderia estar oculto por padrão em telas */
+    @page { margin: 14mm; }
 
+    /* Neutraliza TODAS as animações / transições / transforms */
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        box-shadow: none !important;
+        filter: none !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Força visibilidade de elementos que dependem de JS ou classes de estado */
+    .animar-visivel,
+    .animar-saida,
+    .animar-entrada,
     .btn,
     .btn-danger,
     button,
     .back-to-top,
+    .back-to-top.show,
     .whatsapp-button,
     .hero .hero-actions .hero-btn,
     .logo_orcamento,
+    .mylogo,
+    .mylogo.animate,
     .galeria img,
-    footer,
-
-
-
-    /* Animações e transforms não devem afetar impressão */
-    *,
-    *::before,
-    *::after {
-        animation: none !important;
-        transition: none !important;
-        transform: none !important;
-    }
-
-    /* Layout do rodapé na impressão */
-    footer {
-        position: fixed !important;
-        left: 0 !important;
-        bottom: 0 !important;
-        width: 100% !important;
-        text-align: center !important;
-        padding: 8px !important;
-        font-size: 0.9rem !important;
-        background: var(--cor-footer) !important;
-        color: var(--cor-footer-texto) !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-
-    /* Componentes que no site são "escondidos" por opacidade */
-    .back-to-top,
-    .back-to-top.show,
-    .hero .hero-actions .hero-btn,
-    .btn.animate,
     .galeria img.animate,
-    .mylogo.animate {
+    footer {
         opacity: 1 !important;
         visibility: visible !important;
     }
 
-    /* Evitar elementos fixos sobrepondo conteúdo na impressão */
+    /* Mantém overlays originais (cores preservadas) */
+    /* (Se quiser ocultar novamente, reativar display:none) */
+
+    /* Elementos originalmente fixos viram fluxo normal para não sobrepor conteúdo */
     .whatsapp-button,
     .back-to-top {
         position: static !important;
-        bottom: auto !important;
-        right: auto !important;
-        box-shadow: none !important;
-        filter: none !important;
+        inset: auto !important;
+        margin: 6px 0 !important;
+        background: transparent !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
+        width: auto !important;
+        height: auto !important;
+        font-size: 12px !important;
+        padding: 4px 8px !important;
+    }
+
+    /* Cards e blocos não devem quebrar ao meio */
+    .exp-card,
+    .orcamento,
+    .video-item,
+    .tracks-bloco,
+    .reels-buttons .btn,
+    table,
+    footer { break-inside: avoid !important; page-break-inside: avoid !important; }
+
+    /* Mantém esquema de cores original do site */
+    body, html { background: var(--cor-fundo) !important; color: var(--cor-texto) !important; }
+    nav { background: var(--cor-destaque) !important; }
+    nav a { color: var(--cor-link) !important; }
+    /* Remove qualquer sufixo automático de URL (desativado) */
+    a[href]::after { content: none !important; }
+
+    /* Logo e imagens sempre dimensionadas corretamente */
+    img, video { max-width: 100% !important; height: auto !important; }
+    /* 'poster' não é propriedade CSS; removido */
+
+    /* Rodapé consolidado ao final da página */
+    footer {
+        position: static !important;
+        background: #111 !important;
+        color: #fff !important;
+        padding: 12px 8px !important;
+        font-size: 0.85rem !important;
     }
 }
 
