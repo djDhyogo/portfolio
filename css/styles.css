@@ -1039,22 +1039,23 @@ footer a:hover {
         visibility: visible !important;
     }
 
-    /* Mantém overlays originais (cores preservadas) */
-    /* (Se quiser ocultar novamente, reativar display:none) */
+    /* Remove overlays de gradiente que podem escurecer conteúdo na impressão */
+    .hero::before,
+    .hero::after,
+    .reels::before,
+    .reels::after { display: none !important; }
 
-    /* Elementos originalmente fixos viram fluxo normal para não sobrepor conteúdo */
+    /* Elementos originalmente fixos viram fluxo normal mas mantêm cor original */
     .whatsapp-button,
     .back-to-top {
         position: static !important;
         inset: auto !important;
-        margin: 6px 0 !important;
-        background: transparent !important;
-        color: #000 !important;
-        border: 1px solid #000 !important;
+        margin: 6px 4px !important;
         width: auto !important;
         height: auto !important;
         font-size: 12px !important;
-        padding: 4px 8px !important;
+        padding: 6px 10px !important;
+        transform: none !important;
     }
 
     /* Cards e blocos não devem quebrar ao meio */
@@ -1066,12 +1067,11 @@ footer a:hover {
     table,
     footer { break-inside: avoid !important; page-break-inside: avoid !important; }
 
-    /* Mantém esquema de cores original do site */
-    body, html { background: var(--cor-fundo) !important; color: var(--cor-texto) !important; }
-    nav { background: var(--cor-destaque) !important; }
-    nav a { color: var(--cor-link) !important; }
-    /* Remove qualquer sufixo automático de URL (desativado) */
-    a[href]::after { content: none !important; }
+    /* Mantém tema original com cores impressas (quando suportado) */
+    html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    nav a { text-decoration: none !important; }
+    /* Remove qualquer pseudo URL adicionada anteriormente */
+    a[href]::after { content: "" !important; }
 
     /* Logo e imagens sempre dimensionadas corretamente */
     img, video { max-width: 100% !important; height: auto !important; }
@@ -1085,6 +1085,62 @@ footer a:hover {
         padding: 12px 8px !important;
         font-size: 0.85rem !important;
     }
+
+    /* ===== Agrupamento e proximidade de títulos ===== */
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0.6rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+    /* Evita título no fim da página separado do primeiro bloco relevante */
+    h1 + *, h2 + *, h3 + *, h4 + *, h5 + *, h6 + * { break-inside: avoid !important; page-break-inside: avoid !important; }
+    /* Reduz espaçamento interno para seções impressas longas */
+    section { padding-top: 0.5rem !important; }
+    /* Classe utilitária opcional para forçar agrupamento manual */
+    .keep-with-next { break-after: avoid-page !important; page-break-after: avoid !important; }
+
+    /* Oculta botão WhatsApp na impressão conforme solicitação */
+    .whatsapp-button { display: none !important; }
+
+    /* ===== Otimização de espaço e proximidade ===== */
+    header, nav { padding: 4mm 0 !important; margin: 0 0 3mm !important; }
+    nav a { padding: 0 2mm !important; font-size: 0.85rem !important; }
+    .container, section { padding: 4mm 5mm !important; margin: 0 0 6mm !important; }
+    .orcamento { padding: 5mm 5mm !important; margin: 0 0 6mm !important; }
+    body, html { line-height: 1.28 !important; }
+    p { margin: 0 0 3.5mm !important; }
+    ul, ol { margin: 0 0 4mm !important; padding-left: 6mm !important; }
+    .orcamento .item { padding-bottom: 2mm !important; margin: 2mm 0 !important; }
+    .orcamento h2 { margin: 0 0 3mm !important; }
+    .cliente-info { margin: 0 0 3mm !important; }
+    .total { margin-top: 4mm !important; }
+
+    /* Remove margem superior redundante em primeiro título de blocos */
+    section h1:first-child,
+    section h2:first-child,
+    section h3:first-child { margin-top: 0 !important; }
+
+    /* Títulos não quebram e carregam os primeiros elementos (parágrafo/lista/form/tabela) */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid !important;
+        break-after: avoid-page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    h1 + p, h1 + ul, h1 + ol, h1 + table, h1 + div,
+    h2 + p, h2 + ul, h2 + ol, h2 + table, h2 + div,
+    h3 + p, h3 + ul, h3 + ol, h3 + table, h3 + div,
+    h4 + p, h4 + ul, h4 + ol, h4 + table, h4 + div { break-inside: avoid !important; page-break-inside: avoid !important; }
+
+    /* Agrupamento mais forte para blocos de orçamento / tabelas / listas longas */
+    .orcamento, table, .tracks-bloco { page-break-inside: avoid !important; break-inside: avoid !important; }
+    table thead, table tbody, table tfoot { break-inside: avoid !important; }
+
+    /* Inputs impressos mais compactos */
+    input, button { padding: 2mm 3mm !important; font-size: 0.85rem !important; }
+    input { background: #f5f5f5 !important; color: #000 !important; }
+
+    /* Elimina grandes gaps causados por quebras forçadas anteriores */
+    .gap-print-small { margin-bottom: 3mm !important; }
 }
 
 /* ===================== MEDIA QUERIES CENTRALIZADAS ===================== */
