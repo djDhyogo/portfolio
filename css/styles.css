@@ -326,7 +326,6 @@
     .btn.animate,
     .hero-arrow,
     .whatsapp-button,
-    
     .whatsapp-button i {
         animation: none !important;
         transition: none !important;
@@ -341,13 +340,11 @@
     }
 }
 
-
 .logo_orcamento {
     width: 300px;
     height: auto;
     margin-bottom: 10px;
 }
-
 
 /* ===== Efeito visual para seção Elementor ===== */
 .elementor-section.elementor-inner-section.elementor-section-full_width.elementor-section-height-default {
@@ -448,6 +445,94 @@
     margin-bottom: 0.7rem;
     color: #fff;
     font-weight: 500;
+}
+
+/* ===== EXPERIÊNCIAS (cards) ===== */
+#experiencias .exp-grid {
+    display: grid;
+    gap: 1.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    width: min(1080px, 92%);
+    margin: 0 auto;
+}
+
+#experiencias .exp-card {
+    background: #202020;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.2rem 1rem 1.1rem;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-height: 160px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s;
+}
+
+#experiencias .exp-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(233, 255, 43, 0.12),
+            rgba(9, 234, 254, 0.05));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+#experiencias .exp-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 26px -6px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(233, 255, 43, 0.22);
+    border-color: rgba(233, 255, 43, 0.4);
+}
+
+#experiencias .exp-card:hover::before {
+    opacity: 1;
+}
+
+#experiencias .exp-card h3 {
+    font-size: 1.05rem;
+    color: var(--color-primary, #e9ff2b);
+    margin: 0 0 0.1rem 0;
+    letter-spacing: 0.5px;
+}
+
+#experiencias .exp-funcao {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+#experiencias .exp-ano {
+    font-size: 0.78rem;
+    color: #cfcfcf;
+    margin-top: auto;
+    line-height: 1.3;
+}
+
+@media (max-width: 520px) {
+    #experiencias .exp-card {
+        min-height: 140px;
+    }
+
+    #experiencias .exp-card h3 {
+        font-size: 0.98rem;
+    }
+
+    #experiencias .exp-funcao {
+        font-size: 0.75rem;
+    }
+
+    #experiencias .exp-ano {
+        font-size: 0.7rem;
+    }
 }
 
 /* ===== mylogo ===== */
@@ -921,9 +1006,8 @@ footer a:hover {
 
 /* Impressão: garantir visibilidade de todos os elementos e neutralizar animações */
 @media print {
-
     /* Mostrar tudo que poderia estar oculto por padrão em telas */
-    
+
     .btn,
     .btn-danger,
     button,
@@ -944,9 +1028,6 @@ footer a:hover {
         transition: none !important;
         transform: none !important;
     }
-
-
-
 
     /* Layout do rodapé na impressão */
     footer {
@@ -986,7 +1067,6 @@ footer a:hover {
         filter: none !important;
     }
 }
-
 
 /* ===================== MEDIA QUERIES CENTRALIZADAS ===================== */
 
