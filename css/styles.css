@@ -33,7 +33,7 @@
     align-items: center;
     justify-content: center;
     background: #000 center/cover no-repeat;
-    background-position: center 18%;
+    background-position: center 30%;
     /* prioriza a parte superior da foto */
     overflow: hidden;
 }
@@ -81,6 +81,7 @@
 
 .hero-content {
     position: relative;
+    top: -3vh; /* eleva levemente o conteúdo (testar entre -2vh e -5vh) */
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -91,8 +92,10 @@
 }
 
 .hero .mylogo {
-    width: min(88vw, 520px);
+    width: min(82vw, 480px);
     height: auto;
+    margin-bottom: 0.6rem;
+    transform: translateY(-10px); /* sobe levemente a logo */
     filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.6));
 }
 
@@ -196,11 +199,16 @@
 @media (max-width: 576px) {
     .hero {
         min-height: 88vh;
-        background-position: center 12%;
+        background-position: center 20%; /* ajuste fino mobile */
     }
 
     .hero .mylogo {
-        width: min(86vw, 380px);
+        width: min(84vw, 340px);
+        transform: translateY(-6px);
+    }
+
+    .hero-content {
+        top: -2vh; /* ajuste menor no mobile */
     }
 
     .hero-btn {
