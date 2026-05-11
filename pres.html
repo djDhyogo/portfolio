@@ -52,7 +52,7 @@
     padding: 0 20px;
     }
 
-    h2 {
+    h2, h1 {
     text-align: center;
     }
 
@@ -123,7 +123,8 @@
 </head>
 <body>
 <div class="container">
-    <h2>📌 Orçamento DJ – Setup Premium</h2>
+    <h1>Relação de Apresentações Artísticas – DJ Dhyogo</h1>
+    <h2>📌 Em Abertas</h2>
 
     <!-- botão com classe no-print para não aparecer na impressão -->
     <button class="btn no-print" onclick="adicionarLinha()">+ Adicionar Evento</button>
@@ -133,7 +134,6 @@
             <tr>
                 <th>Evento</th>
                 <th>Data</th>
-                <th>Quantidade</th>
                 <th>Subtotal</th>
                 <!-- th com classe no-print: não será impresso -->
                 <th class="no-print">Ação</th>
@@ -142,7 +142,7 @@
         <tbody></tbody>
         <tfoot>
             <tr>
-                <td colspan="3" class="total_serviços" id="total-apresentacoes">Total de Apresentações: 0</td>
+                <td colspan="2" class="total_serviços" id="total-apresentacoes">Total de Apresentações: 0</td>
                 <td class="total_serviços" id="total-geral">R$ 0,00</td>
                 <td class="no-print"></td>
             </tr>
@@ -155,9 +155,11 @@
 function salvarTabela() {
     const linhas = [];
     document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
-        const tds = Array.from(linha.querySelectorAll("td")).slice(0, 4);
-        const cols = tds.map(td => td.innerText);
-        linhas.push(cols);
+        // Formato atual: [evento, data, subtotal]
+        const evento = linha.cells[0].innerText;
+        const data = linha.cells[1].innerText;
+        const subtotal = linha.cells[2].innerText;
+        linhas.push([evento, data, subtotal]);
     });
     localStorage.setItem("eventosTabela", JSON.stringify(linhas));
 }
@@ -168,8 +170,9 @@ function carregarTabela() {
         adicionarLinha("Carnaval 2025 – 1º dia", "01/03/2025", 500);
     } else {
         dados.forEach(c => {
-            // c[0]=evento, c[1]=data, c[2]=quantidade (será recalculada), c[3]=subtotal
-            const subtotal = parseFloat(String(c[3]).replace(",", ".")) || 0;
+            // Compatibilidade: aceita [evento, data, quantidade, subtotal] e [evento, data, subtotal]
+            const subtotalRaw = c.length >= 4 ? c[3] : c[2];
+            const subtotal = parseFloat(String(subtotalRaw).replace(",", ".")) || 0;
             adicionarLinha(c[0], c[1], subtotal);
         });
     }
@@ -180,7 +183,7 @@ function atualizarTotais() {
     let totalApresentacoes = linhas.length;
     let soma = 0;
     linhas.forEach(linha => {
-        const subtotalText = linha.cells[3].innerText || "0";
+        const subtotalText = linha.cells[2].innerText || "0";
         const subtotal = parseFloat(String(subtotalText).replace(",", ".")) || 0;
         soma += subtotal;
     });
@@ -191,14 +194,11 @@ function atualizarTotais() {
 }
 
 /**
- * adiciona uma linha. quantidade é sequencial e gerada automaticamente.
- * subtotal é editável (string com vírgula é aceita).
+ * Adiciona uma linha com subtotal editavel (string com virgula e aceita).
  */
 function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 500) {
     const tabela = document.querySelector("#tabela-eventos tbody");
     const novaLinha = tabela.insertRow();
-
-    const numeroSequencial = tabela.rows.length; // já é a sequência correta (1..n)
 
     // Certifica formato do subtotal
     const s = (typeof subtotal === "number") ? subtotal.toFixed(2).replace(".", ",") : String(subtotal);
@@ -206,7 +206,6 @@ function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 
     novaLinha.innerHTML = `
         <td contenteditable="true">${evento}</td>
         <td contenteditable="true">${data}</td>
-        <td>${numeroSequencial}</td>
         <td contenteditable="true">${s}</td>
         <td class="no-print"><button class="btn-danger" onclick="removerLinha(this)">Excluir</button></td>
     `;
@@ -214,21 +213,14 @@ function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 
     // eventos para atualizar totais quando o usuário editar
     novaLinha.cells[0].addEventListener("input", atualizarTotais);
     novaLinha.cells[1].addEventListener("input", atualizarTotais);
-    novaLinha.cells[3].addEventListener("input", atualizarTotais);
+    novaLinha.cells[2].addEventListener("input", atualizarTotais);
 
     atualizarTotais();
 }
 
 function removerLinha(botao) {
     botao.closest("tr").remove();
-    atualizarNumeracao();
     atualizarTotais();
-}
-
-function atualizarNumeracao() {
-    document.querySelectorAll("#tabela-eventos tbody tr").forEach((linha, index) => {
-        linha.cells[2].innerText = index + 1;
-    });
 }
 
 // inicializa a tabela
