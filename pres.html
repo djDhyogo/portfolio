@@ -105,23 +105,24 @@
     font-size: 14px;
     }
     footer {
-    
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    position: static;
+    margin-top: 20px;
     width: 100%;
-    z-index: 100;
-        
+    clear: both;
     }
     @media print {
     .no-print {
         display: none !important;
     }
+
+    footer {
+        position: static !important;
+        margin-top: 12mm;
+        page-break-inside: avoid;
+    }
 }
 
 </style>
-</head>
-<body>
 <div class="container">
     <h1>Relação de Apresentações Artísticas – DJ Dhyogo</h1>
     <h2>📌 Em Abertas</h2>
@@ -149,7 +150,6 @@
         </tfoot>
     </table>
 </div>
-</body>
 <script src="js/animacao-unificada.js"></script>
 <script>
 function salvarTabela() {
@@ -237,4 +237,5 @@ carregarTabela();
     © 2025 Todos os direitos reservados | CNPJ 55996625000147 | Razão Social 55.996.625 Dyogo Santos Leal
 </footer>
 
+</body>
 </html>
