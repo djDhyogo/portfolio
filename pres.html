@@ -30,17 +30,15 @@
         <header>
             <img class="logo_orcamento" src="/assets/images/Minhalogo.png" alt="Logo do DJ Dhyogo" />
         </header>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="#galeria">Galeria</a>
-            <a href="orcamento.html">Orçamento</a>
-            <a href="#contato">Contato</a>
-        </nav>
+        <nav class="barra-topo" aria-hidden="true"></nav>
 <style>
 
 
     body {
     margin: 0;
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
     background: #fff;
@@ -52,8 +50,17 @@
     padding: 0 20px;
     }
 
+    .barra-topo {
+    min-height: 10px;
+    width: 100%;
+    }
+
     h2, h1 {
     text-align: center;
+    }
+    h1 {
+        font-size: 22px;
+        text-align: center;
     }
 
     table {
@@ -69,6 +76,12 @@
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
+    }
+
+    td[contenteditable="true"]:empty::before {
+    content: attr(data-placeholder);
+    color: #999;
+    pointer-events: none;
     }
 
 
@@ -106,12 +119,22 @@
     }
     footer {
     position: static;
+    display: block;
     margin-top: 20px;
     width: 100%;
     clear: both;
     }
     @media print {
     .no-print {
+        display: none !important;
+    }
+
+    nav {
+        display: block !important;
+        min-height: 24px;
+    }
+
+    .footer-note a {
         display: none !important;
     }
 
@@ -152,6 +175,28 @@
 </div>
 <script src="js/animacao-unificada.js"></script>
 <script>
+function parseMoedaBR(valor) {
+    const texto = String(valor ?? "").trim();
+    if (!texto) return 0;
+
+    // Remove simbolos e espacos, mantendo apenas digitos, sinais e separadores.
+    const limpo = texto.replace(/[^\d,.-]/g, "");
+    if (!limpo) return 0;
+
+    // Se houver virgula, ela e decimal (pt-BR) e pontos sao milhares.
+    if (limpo.includes(",")) {
+        const normalizado = limpo.replace(/\./g, "").replace(",", ".");
+        return parseFloat(normalizado) || 0;
+    }
+
+    // Sem virgula, aceita formato decimal com ponto.
+    return parseFloat(limpo) || 0;
+}
+
+function formatarMoedaBR(valor) {
+    return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
 function salvarTabela() {
     const linhas = [];
     document.querySelectorAll("#tabela-eventos tbody tr").forEach(linha => {
@@ -167,12 +212,12 @@ function salvarTabela() {
 function carregarTabela() {
     const dados = JSON.parse(localStorage.getItem("eventosTabela") || "[]");
     if (dados.length === 0) {
-        adicionarLinha("Carnaval 2025 – 1º dia", "01/03/2025", 500);
+        adicionarLinha();
     } else {
         dados.forEach(c => {
             // Compatibilidade: aceita [evento, data, quantidade, subtotal] e [evento, data, subtotal]
             const subtotalRaw = c.length >= 4 ? c[3] : c[2];
-            const subtotal = parseFloat(String(subtotalRaw).replace(",", ".")) || 0;
+            const subtotal = parseMoedaBR(subtotalRaw);
             adicionarLinha(c[0], c[1], subtotal);
         });
     }
@@ -184,29 +229,29 @@ function atualizarTotais() {
     let soma = 0;
     linhas.forEach(linha => {
         const subtotalText = linha.cells[2].innerText || "0";
-        const subtotal = parseFloat(String(subtotalText).replace(",", ".")) || 0;
+        const subtotal = parseMoedaBR(subtotalText);
         soma += subtotal;
     });
 
     document.getElementById("total-apresentacoes").innerText = `Total de Apresentações: ${totalApresentacoes}`;
-    document.getElementById("total-geral").innerText = "R$ " + soma.toFixed(2).replace(".", ",");
+    document.getElementById("total-geral").innerText = formatarMoedaBR(soma);
     salvarTabela();
 }
 
 /**
  * Adiciona uma linha com subtotal editavel (string com virgula e aceita).
  */
-function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 500) {
+function adicionarLinha(evento = "", data = "", subtotal = "") {
     const tabela = document.querySelector("#tabela-eventos tbody");
     const novaLinha = tabela.insertRow();
 
     // Certifica formato do subtotal
-    const s = (typeof subtotal === "number") ? subtotal.toFixed(2).replace(".", ",") : String(subtotal);
+    const s = String(subtotal ?? "").trim() === "" ? "" : formatarMoedaBR(parseMoedaBR(subtotal));
 
     novaLinha.innerHTML = `
-        <td contenteditable="true">${evento}</td>
-        <td contenteditable="true">${data}</td>
-        <td contenteditable="true">${s}</td>
+        <td contenteditable="true" data-placeholder="Evento">${evento}</td>
+        <td contenteditable="true" data-placeholder="dd/mm/aaaa">${data}</td>
+        <td contenteditable="true" data-placeholder="R$ 0,00">${s}</td>
         <td class="no-print"><button class="btn-danger" onclick="removerLinha(this)">Excluir</button></td>
     `;
 
@@ -214,6 +259,15 @@ function adicionarLinha(evento = "Novo Evento", data = "dd/mm/aaaa", subtotal = 
     novaLinha.cells[0].addEventListener("input", atualizarTotais);
     novaLinha.cells[1].addEventListener("input", atualizarTotais);
     novaLinha.cells[2].addEventListener("input", atualizarTotais);
+    novaLinha.cells[2].addEventListener("blur", (event) => {
+        if (String(event.target.innerText).trim() === "") {
+            atualizarTotais();
+            return;
+        }
+        const valor = parseMoedaBR(event.target.innerText);
+        event.target.innerText = formatarMoedaBR(valor);
+        atualizarTotais();
+    });
 
     atualizarTotais();
 }
@@ -228,9 +282,8 @@ carregarTabela();
 </script>
 
 <div class="footer-note">
-    <p>Contato para dúvidas: (99) 98128-9199</p>
-    <p><a href="https://wa.me/5599981289199?text=Ol%C3%A1+recebi+o+or%C3%A7amento" class="btn animate">Confirmar Recebimento</a></p>
-</div>
+    <p>Contato para dúvidas: (99) 99197-0062</p>
+    <p><a href="https://wa.me/5599991970062?text=Ol%C3%A1+recebi+o+or%C3%A7amento" class="btn animate">Confirmar Recebimento</a></p>
 </div>
 
 <footer>
